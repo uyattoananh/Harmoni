@@ -103,12 +103,7 @@ function createMainWindow() {
     }
   });
 
-  // Minimize to tray instead of taskbar
-  mainWindow.on('minimize', (e) => {
-    e.preventDefault();
-    mainWindow.hide();
-    updateTrayMenu();
-  });
+  // Let minimize work normally (don't hide — hiding suspends the renderer)
 
   mainWindow.on('closed', () => {
     mainWindow = null;
@@ -649,6 +644,11 @@ ipcMain.on('open-main', () => {
 
 ipcMain.on('launch-sonos', () => {
   launchSonosApp();
+});
+
+ipcMain.on('app-quit', () => {
+  app.isQuitting = true;
+  app.quit();
 });
 
 // Widget position presets

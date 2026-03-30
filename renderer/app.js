@@ -165,6 +165,9 @@ document.addEventListener('click', () => {
 });
 $('#player-menu').onclick = (e) => e.stopPropagation();
 
+// Quit button
+$('#quit-btn').onclick = () => windowControls.quit();
+
 // Close menu when any menu item is clicked
 document.querySelectorAll('.player-menu-item').forEach(item => {
   item.addEventListener('click', () => {
