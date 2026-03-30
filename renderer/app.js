@@ -874,13 +874,15 @@ $('#mute-btn').addEventListener('dblclick', () => {
 $('#mute-btn').addEventListener('contextmenu', (e) => {
   e.preventDefault();
   const menu = document.createElement('div');
-  menu.style.cssText = 'position:fixed;z-index:50;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:4px;display:flex;flex-direction:column;gap:2px;';
+  menu.style.cssText = 'position:fixed;z-index:50;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:4px;display:flex;flex-direction:column;gap:2px;box-shadow:0 4px 16px rgba(0,0,0,0.3);';
   menu.style.left = e.clientX + 'px';
-  menu.style.top = e.clientY + 'px';
+  // Open upward to avoid clipping at bottom
+  const menuHeight = 4 * 32 + 12; // 4 buttons + padding
+  menu.style.top = Math.max(8, e.clientY - menuHeight) + 'px';
   [25, 50, 75, 100].forEach(v => {
     const btn = document.createElement('button');
     btn.textContent = v + '%';
-    btn.style.cssText = 'background:none;border:none;color:var(--text);padding:6px 16px;cursor:pointer;font-size:12px;border-radius:4px;text-align:left;font-family:inherit;';
+    btn.style.cssText = 'background:none;border:none;color:var(--text);padding:8px 20px;cursor:pointer;font-size:13px;border-radius:4px;text-align:left;font-family:inherit;';
     btn.onmouseenter = () => btn.style.background = 'var(--surface-hover)';
     btn.onmouseleave = () => btn.style.background = 'none';
     btn.onclick = () => { sonos.setVolumePreset(v); menu.remove(); };
