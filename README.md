@@ -19,10 +19,19 @@ A unified music controller with themes, Sonos, Spotify, local files, and more.
 
 ## Download
 
-### Windows
-Download `Harmoni-1.0.0-win.zip` from [Releases](https://github.com/uyattoananh/Harmoni/releases), extract, and run `Harmoni.exe`.
+Download the latest version from [Releases](https://github.com/uyattoananh/Harmoni/releases).
 
-### macOS & Linux
+| Platform | File | Auto-updates? |
+|---|---|---|
+| **Windows** | `Harmoni-Setup-x.x.x.exe` | Yes |
+| **macOS** | `Harmoni-x.x.x-universal.zip` | Yes |
+| **Linux** | `Harmoni-x.x.x.AppImage` | Yes |
+
+- **Windows**: Run the `.exe` installer. Future updates download and install automatically.
+- **macOS**: Extract the zip, drag `Harmoni.app` to Applications. Supports both Intel and Apple Silicon.
+- **Linux**: `chmod +x Harmoni-*.AppImage && ./Harmoni-*.AppImage`
+
+### Build from source
 ```bash
 git clone https://github.com/uyattoananh/Harmoni.git
 cd Harmoni
