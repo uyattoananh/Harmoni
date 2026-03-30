@@ -18,7 +18,7 @@ jobs:
             ext: exe
           - os: macos-latest
             platform: mac
-            ext: dmg
+            ext: app
           - os: ubuntu-latest
             platform: linux
             ext: AppImage
@@ -46,10 +46,10 @@ jobs:
           name: harmoni-${{ matrix.platform }}
           path: |
             dist/*.exe
-            dist/*.dmg
             dist/*.AppImage
             dist/*.zip
             dist/*.yml
+            dist/mac*/*.zip
 
   release:
     needs: build
