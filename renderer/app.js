@@ -168,6 +168,14 @@ $('#player-menu').onclick = (e) => e.stopPropagation();
 // Quit button
 $('#quit-btn').onclick = () => windowControls.quit();
 
+// Bug report & suggestions — open GitHub issues in browser
+$('#bug-report-btn').onclick = () => {
+  window.open('https://github.com/uyattoananh/Harmoni/issues/new?template=bug_report.md&labels=bug', '_blank');
+};
+$('#suggest-btn').onclick = () => {
+  window.open('https://github.com/uyattoananh/Harmoni/issues/new?template=feature_request.md&labels=enhancement', '_blank');
+};
+
 // Close menu when any menu item is clicked
 document.querySelectorAll('.player-menu-item').forEach(item => {
   item.addEventListener('click', () => {
