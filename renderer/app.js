@@ -200,7 +200,7 @@ $('#fb-submit').onclick = async () => {
   $('#fb-submit').disabled = true;
 
   try {
-    await sonos.sendFeedback(feedbackType, title, desc);
+    await windowControls.sendFeedback(feedbackType, title, desc);
     $('#fb-status').textContent = 'Sent! Thank you for your feedback.';
     $('#fb-status').style.display = '';
     $('#fb-status').style.color = '#4cd964';

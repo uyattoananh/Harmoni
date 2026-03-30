@@ -661,6 +661,8 @@ const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1488316345283248289/2f
 
 ipcMain.handle('send-feedback', async (_, type, title, desc) => {
   const https = require('https');
+  let version = '?';
+  try { version = require(path.join(__dirname, 'package.json')).version; } catch (e) {}
   const label = type === 'bug' ? '🐛 Bug Report' : '💡 Feature Request';
   const color = type === 'bug' ? 16007990 : 5025616;
   const body = JSON.stringify({
@@ -668,23 +670,27 @@ ipcMain.handle('send-feedback', async (_, type, title, desc) => {
       title: `${label}: ${title}`,
       description: desc || 'No description provided.',
       color,
-      footer: { text: `Harmoni v${require('./package.json').version} | ${process.platform}` },
+      footer: { text: `Harmoni v${version} | ${process.platform}` },
       timestamp: new Date().toISOString(),
     }],
   });
 
   return new Promise((resolve, reject) => {
-    const url = new URL(DISCORD_WEBHOOK);
+    const webhookUrl = new URL(DISCORD_WEBHOOK);
     const req = https.request({
-      hostname: url.hostname,
-      path: url.pathname + url.search,
+      hostname: webhookUrl.hostname,
+      path: webhookUrl.pathname,
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) },
     }, (res) => {
-      if (res.statusCode < 300) resolve(true);
-      else reject(new Error('Discord webhook failed'));
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', () => {
+        if (res.statusCode < 300) resolve(true);
+        else { console.error('Webhook error:', res.statusCode, data); reject(new Error('Failed')); }
+      });
     });
-    req.on('error', reject);
+    req.on('error', (e) => { console.error('Webhook request error:', e.message); reject(e); });
     req.write(body);
     req.end();
   });
