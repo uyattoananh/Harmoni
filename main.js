@@ -656,6 +656,40 @@ ipcMain.on('open-external', (_, url) => {
   shell.openExternal(url);
 });
 
+// Feedback via Discord webhook
+const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1488316345283248289/2fBu7a32h4x6qvGs-JZBufXjQuXl0osSSoVr7RJ6cegVT8kRfksYmR95G0_1R4vzLATg';
+
+ipcMain.handle('send-feedback', async (_, type, title, desc) => {
+  const https = require('https');
+  const label = type === 'bug' ? '🐛 Bug Report' : '💡 Feature Request';
+  const color = type === 'bug' ? 16007990 : 5025616;
+  const body = JSON.stringify({
+    embeds: [{
+      title: `${label}: ${title}`,
+      description: desc || 'No description provided.',
+      color,
+      footer: { text: `Harmoni v${require('./package.json').version} | ${process.platform}` },
+      timestamp: new Date().toISOString(),
+    }],
+  });
+
+  return new Promise((resolve, reject) => {
+    const url = new URL(DISCORD_WEBHOOK);
+    const req = https.request({
+      hostname: url.hostname,
+      path: url.pathname + url.search,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) },
+    }, (res) => {
+      if (res.statusCode < 300) resolve(true);
+      else reject(new Error('Discord webhook failed'));
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+});
+
 // Widget position presets
 ipcMain.on('set-widget-position', (_, target, pos) => {
   const win = target === 'minibar' ? minibarWindow : locketWindow;

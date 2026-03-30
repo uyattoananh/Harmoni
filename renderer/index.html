@@ -148,11 +148,8 @@
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>Sleep Timer
               </button>
               <div style="height:1px;background:var(--border);margin:4px 0"></div>
-              <button class="icon-btn player-menu-item" id="bug-report-btn" style="width:100%;justify-content:flex-start;gap:8px;padding:8px 10px;border-radius:6px;font-size:12px">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Report Bug
-              </button>
-              <button class="icon-btn player-menu-item" id="suggest-btn" style="width:100%;justify-content:flex-start;gap:8px;padding:8px 10px;border-radius:6px;font-size:12px">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Suggest Feature
+              <button class="icon-btn player-menu-item" id="feedback-btn" style="width:100%;justify-content:flex-start;gap:8px;padding:8px 10px;border-radius:6px;font-size:12px">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Feedback
               </button>
               <div style="height:1px;background:var(--border);margin:4px 0"></div>
               <button class="icon-btn player-menu-item" id="quit-btn" style="width:100%;justify-content:flex-start;gap:8px;padding:8px 10px;border-radius:6px;font-size:12px;color:#e74c3c">
@@ -473,6 +470,27 @@
             <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:6px">Platform Support</div>
             <p style="color:var(--text-dim);line-height:1.5;font-size:11px"><strong style="color:var(--text)">Windows</strong> — Full support via GSMTC<br><strong style="color:var(--text)">macOS</strong> — Spotify and Apple Music via AppleScript<br><strong style="color:var(--text)">Linux</strong> — Any MPRIS2 player via playerctl</p>
           </div>
+        </div>
+      </div>
+    </div>
+    <!-- Feedback Overlay -->
+    <div id="feedback-overlay" class="theme-overlay">
+      <div class="theme-picker">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-shrink:0">
+          <span style="font-size:15px;font-weight:600">Feedback</span>
+          <button id="feedback-close" class="icon-btn" style="padding:4px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;flex:1;min-height:0">
+          <div style="display:flex;gap:4px">
+            <button class="browse-tab active" id="fb-type-bug" style="flex:1;padding:5px 0;font-size:11px;text-align:center;border-radius:6px">Bug Report</button>
+            <button class="browse-tab" id="fb-type-feature" style="flex:1;padding:5px 0;font-size:11px;text-align:center;border-radius:6px">Suggestion</button>
+          </div>
+          <input type="text" id="fb-title" placeholder="Title" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);font-family:inherit;font-size:12px;outline:none;box-sizing:border-box">
+          <textarea id="fb-desc" placeholder="Describe the issue or suggestion..." style="width:100%;flex:1;min-height:80px;padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--text);font-family:inherit;font-size:12px;outline:none;resize:none;box-sizing:border-box"></textarea>
+          <button class="refresh-btn" id="fb-submit" style="margin:0;padding:10px;font-size:12px;font-weight:600;text-align:center">Submit</button>
+          <p id="fb-status" style="text-align:center;font-size:11px;color:var(--text-dim);display:none"></p>
         </div>
       </div>
     </div>

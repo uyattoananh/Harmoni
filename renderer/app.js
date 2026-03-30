@@ -168,12 +168,52 @@ $('#player-menu').onclick = (e) => e.stopPropagation();
 // Quit button
 $('#quit-btn').onclick = () => windowControls.quit();
 
-// Bug report & suggestions — open GitHub issues in default browser
-$('#bug-report-btn').onclick = () => {
-  windowControls.openExternal('https://github.com/uyattoananh/Harmoni/issues/new?template=bug_report.md&labels=bug');
+// Feedback form
+let feedbackType = 'bug';
+
+$('#feedback-btn').onclick = () => {
+  $('#feedback-overlay').classList.add('open');
+  $('#fb-title').value = '';
+  $('#fb-desc').value = '';
+  $('#fb-status').style.display = 'none';
 };
-$('#suggest-btn').onclick = () => {
-  windowControls.openExternal('https://github.com/uyattoananh/Harmoni/issues/new?template=feature_request.md&labels=enhancement');
+$('#feedback-close').onclick = () => $('#feedback-overlay').classList.remove('open');
+$('#feedback-overlay').onclick = (e) => { if (e.target === e.currentTarget) $('#feedback-overlay').classList.remove('open'); };
+
+$('#fb-type-bug').onclick = () => {
+  feedbackType = 'bug';
+  $('#fb-type-bug').classList.add('active');
+  $('#fb-type-feature').classList.remove('active');
+};
+$('#fb-type-feature').onclick = () => {
+  feedbackType = 'feature';
+  $('#fb-type-feature').classList.add('active');
+  $('#fb-type-bug').classList.remove('active');
+};
+
+$('#fb-submit').onclick = async () => {
+  const title = $('#fb-title').value.trim();
+  const desc = $('#fb-desc').value.trim();
+  if (!title) { $('#fb-title').focus(); return; }
+
+  $('#fb-submit').textContent = 'Sending...';
+  $('#fb-submit').disabled = true;
+
+  try {
+    await sonos.sendFeedback(feedbackType, title, desc);
+    $('#fb-status').textContent = 'Sent! Thank you for your feedback.';
+    $('#fb-status').style.display = '';
+    $('#fb-status').style.color = '#4cd964';
+    $('#fb-title').value = '';
+    $('#fb-desc').value = '';
+    setTimeout(() => $('#feedback-overlay').classList.remove('open'), 1500);
+  } catch (e) {
+    $('#fb-status').textContent = 'Failed to send. Try again later.';
+    $('#fb-status').style.display = '';
+    $('#fb-status').style.color = '#e74c3c';
+  }
+  $('#fb-submit').textContent = 'Submit';
+  $('#fb-submit').disabled = false;
 };
 
 // Close menu when any menu item is clicked
