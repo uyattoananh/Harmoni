@@ -38,6 +38,7 @@
       gap: 4px;
       padding: 10px 10px 0;
       transition: opacity 0.5s ease;
+      -webkit-app-region: no-drag;
     }
 
     /* ── Top bar ── */
@@ -81,17 +82,22 @@
       min-width: 0;
       overflow: hidden;
       position: relative;
-      height: 22px;
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
     .bar-text {
-      display: inline-block;
+      display: block;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       font-size: 12px;
       font-weight: 500;
-      line-height: 18px;
+      line-height: 20px;
+    }
+    .bar-text.scrolling {
+      overflow: visible;
+      text-overflow: unset;
     }
     .bar-text .artist { color: rgba(255,255,255,0.45); font-weight: 400; }
     .bar-text.scrolling {
@@ -139,8 +145,20 @@
       color: #fff; background: rgba(255,255,255,0.12);
     }
     .bar-btn.play:hover { background: rgba(255,255,255,0.22); }
-    .bar-btn.lyrics-toggle { font-size: 10px; font-weight: 700; letter-spacing: -0.5px; }
-    .bar-btn.lyrics-toggle.active, .bar-btn.active { color: #fff; background: rgba(255,255,255,0.15); }
+    .bar-btn.lyrics-toggle {
+      font-size: 9px; font-weight: 700; letter-spacing: -0.5px;
+      color: var(--text); background: transparent;
+      border: 1.5px solid var(--text); border-radius: 4px;
+      width: auto; height: auto;
+      padding: 2px 5px;
+      opacity: 0.6;
+    }
+    .bar-btn.lyrics-toggle:hover { opacity: 1; }
+    .bar-btn.lyrics-toggle.active {
+      background: var(--text); color: var(--bg);
+      border-color: var(--text);
+      opacity: 1;
+    }
     .source-badge {
       font-size: 8px;
       font-weight: 600;
@@ -179,8 +197,6 @@
     .lyrics-panel {
       flex: 1;
       background: var(--bg);
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
       border: 1px solid var(--border);
       border-radius: 16px;
       overflow: hidden;
@@ -190,14 +206,14 @@
     .lyrics-panel.open { display: flex; }
     .lyrics-panel.mini {
       display: flex;
-      max-height: 56px;
-      min-height: 56px;
+      max-height: 110px;
+      min-height: 110px;
     }
 
     .lyrics-scroll {
       flex: 1;
       overflow-y: auto;
-      padding: 16px 20px;
+      padding: 12px 14px;
       scroll-behavior: smooth;
       -webkit-app-region: drag;
     }
@@ -210,26 +226,27 @@
     }
 
     .lyrics-line {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 400;
-      line-height: 1.7;
-      color: rgba(255,255,255,0.25);
+      line-height: 1.6;
+      color: rgba(255,255,255,0.4);
       transition: all 0.3s ease;
       padding: 2px 0;
+      cursor: default;
     }
     .lyrics-line.active {
       color: #fff;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 16px;
     }
     .lyrics-line.past {
-      color: rgba(255,255,255,0.4);
+      color: rgba(255,255,255,0.55);
     }
 
     .lyrics-status {
       padding: 20px;
       text-align: center;
-      color: rgba(255,255,255,0.3);
+      color: var(--text-dim);
       font-size: 12px;
       font-weight: 400;
     }
@@ -487,14 +504,9 @@
     sonos.onStateUpdate((data) => {
       if (!data) return;
 
-      // Source badge
+      // Source badge — hidden, takes up space and clips title
       const badge = document.getElementById('source-badge');
-      if (data._sourceMode === 'local' && data._source) {
-        badge.textContent = data._source;
-        badge.style.display = '';
-      } else {
-        badge.style.display = 'none';
-      }
+      badge.style.display = 'none';
 
       isPlaying = data.state === 'playing';
       document.getElementById('b-play').style.display = isPlaying ? 'none' : 'block';

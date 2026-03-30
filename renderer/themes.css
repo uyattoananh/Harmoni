@@ -66,6 +66,8 @@
 [data-theme="light"] .bar-text .artist { color: #888; }
 [data-theme="light"] .bar-btn { color: #888; }
 [data-theme="light"] .bar-btn:hover { color: #1a1a1a; background: #e8e8ec; }
+[data-theme="light"] .bar-btn.lyrics-toggle { color: #000; border-color: #000; opacity: 0.8; }
+[data-theme="light"] .bar-btn.lyrics-toggle.active { background: #000; color: #fff; }
 [data-theme="light"] .bar-btn.play { background: #1a1a1a; color: #fff; }
 [data-theme="light"] .bar-btn.play:hover { background: #333; }
 /* Locket */
@@ -437,7 +439,7 @@
 [data-theme="neon"] .bar-btn:hover { color: #00ffff; background: #2a1040; }
 [data-theme="neon"] .bar-btn.play { background: #ff00ff; color: #000; box-shadow: 0 0 10px rgba(255,0,255,0.4); }
 [data-theme="neon"] .lyrics-panel { background: #08000f; border-color: #4400aa; }
-[data-theme="neon"] .lyrics-line { color: #3a1a55; }
+[data-theme="neon"] .lyrics-line { color: #7744aa; }
 [data-theme="neon"] .lyrics-line.active { color: #00ffff; text-shadow: 0 0 6px rgba(0,255,255,0.3); }
 [data-theme="neon"] .lyrics-line.past { color: #6600aa; }
 /* Locket */
@@ -1364,6 +1366,8 @@
 [data-theme="retro"] .bar-progress-fill { background: #000; border-radius: 0; }
 [data-theme="retro"] .bar-btn { border-radius: 0; color: #555; }
 [data-theme="retro"] .bar-btn:hover { color: #000; background: #e8deb8; }
+[data-theme="retro"] .bar-btn.lyrics-toggle { color: #000; border-color: #000; opacity: 0.8; border-radius: 0; }
+[data-theme="retro"] .bar-btn.lyrics-toggle.active { background: #000; color: #FFF5D5; }
 [data-theme="retro"] .bar-btn.play {
   background: #000; color: #FFF5D5; border-radius: 0;
 }
@@ -1392,7 +1396,7 @@
 }
 [data-theme="bloom"] .bar-close { background: #e86080; border-radius: 50%; }
 [data-theme="bloom"] .lyrics-panel { background: rgba(26,16,40,0.9); border-color: rgba(196,160,232,0.1); border-radius: 16px; }
-[data-theme="bloom"] .lyrics-line { color: #3a2e4e; }
+[data-theme="bloom"] .lyrics-line { color: #7a6898; }
 [data-theme="bloom"] .lyrics-line.active { color: #c4a0e8; }
 [data-theme="bloom"] .lyrics-line.past { color: #6a5880; }
 
@@ -1439,7 +1443,7 @@
 [data-theme="starry"] .bar-btn.play { background: #fff; color: #0a0a2e; box-shadow: 0 0 8px rgba(255,255,255,0.15); }
 [data-theme="starry"] .bar-close { z-index: 2; }
 [data-theme="starry"] .lyrics-panel { background: #0a0a2e; border-color: #2a2a60; backdrop-filter: none; }
-[data-theme="starry"] .lyrics-line { color: #2a2a60; }
+[data-theme="starry"] .lyrics-line { color: #6666aa; }
 [data-theme="starry"] .lyrics-line.active { color: #e8e8ff; }
 [data-theme="starry"] .lyrics-line.past { color: #555588; }
 
@@ -1472,7 +1476,7 @@
 }
 [data-theme="ziro"] .bar-close { background: #ef4444; }
 [data-theme="ziro"] .lyrics-panel { background: #1a1a2e; border: none; border-radius: 10px; backdrop-filter: none; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-[data-theme="ziro"] .lyrics-line { color: #3a3a5e; }
+[data-theme="ziro"] .lyrics-line { color: #6868a0; }
 [data-theme="ziro"] .lyrics-line.active { color: #15a4ef; }
 [data-theme="ziro"] .lyrics-line.past { color: #6868a0; }
 
@@ -1495,7 +1499,7 @@
 [data-theme="terminal"] .bar-close { background: #e22134; border-radius: 0; }
 [data-theme="terminal"] .bar-hover-btn { border-radius: 0; }
 [data-theme="terminal"] .lyrics-panel { background: #0a0a0a; border: 1px solid #1a3a1a; border-radius: 0; backdrop-filter: none; }
-[data-theme="terminal"] .lyrics-line { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #0a2a12; }
+[data-theme="terminal"] .lyrics-line { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #1a6a30; }
 [data-theme="terminal"] .lyrics-line.active { color: #1db954; text-shadow: 0 0 6px rgba(29,185,84,0.3); }
 [data-theme="terminal"] .lyrics-line.past { color: #0d8a3a; }
 [data-theme="retro"] .bar-hover-btn { border-radius: 0; }
@@ -1784,15 +1788,16 @@
    ══════════════════════════════════════════════════════════════ */
 .theme-overlay {
   position: absolute; inset: 0; z-index: 40;
-  display: flex; align-items: center; justify-content: center;
   pointer-events: none; opacity: 0; transition: opacity 0.2s ease;
 }
 .theme-overlay.open { pointer-events: auto; opacity: 1; }
 .theme-picker {
   background: var(--bg); backdrop-filter: blur(40px);
-  border: 1px solid var(--border); border-radius: 16px;
-  padding: 20px; width: 320px; max-height: 80%;
+  border: 1px solid var(--border); border-radius: 12px;
+  padding: 14px;
+  position: absolute; inset: 8px;
   display: flex; flex-direction: column; overflow: hidden;
+  box-sizing: border-box;
 }
 .theme-picker-title {
   font-size: 15px; font-weight: 600; margin-bottom: 14px;

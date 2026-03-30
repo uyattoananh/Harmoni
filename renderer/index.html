@@ -16,16 +16,17 @@
     <div class="titlebar" id="titlebar">
       <div class="titlebar-drag"></div>
       <div class="titlebar-controls">
-        <button class="titlebar-btn locket-btn" id="shortcuts-btn" title="Keyboard Shortcuts" style="font-size:12px;font-weight:700">?</button>
-        <button class="titlebar-btn locket-btn" id="settings-btn" title="Themes">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <button class="titlebar-btn" id="shortcuts-btn" title="Help" style="font-size:11px;font-weight:700">?</button>
+        <button class="titlebar-btn" id="settings-btn" title="Settings">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         </button>
-        <button class="titlebar-btn locket-btn" id="minibar-toggle" title="Toggle Mini Bar">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="10" width="18" height="4" rx="2"/></svg>
+        <button class="titlebar-btn" id="minibar-toggle" title="Toggle Mini Bar">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="8" width="20" height="8" rx="4"/><circle cx="8" cy="12" r="2" fill="currentColor"/></svg>
         </button>
-        <button class="titlebar-btn locket-btn" id="locket-toggle" title="Toggle Locket Widget">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <button class="titlebar-btn" id="locket-toggle" title="Toggle Locket">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="12" cy="12" r="3"/></svg>
         </button>
+        <span style="width:1px;height:14px;background:var(--border);margin:0 2px;flex-shrink:0;align-self:center"></span>
         <button class="titlebar-btn" id="minimize-btn">
           <svg width="12" height="12" viewBox="0 0 12 12"><rect y="5" width="12" height="2" fill="currentColor"/></svg>
         </button>
@@ -129,19 +130,24 @@
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
           </button>
           <span id="room-name" class="room-name">Speaker</span>
-          <div style="display:flex;gap:2px">
-            <button id="history-btn" class="icon-btn" title="History">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <div style="position:relative">
+            <button id="player-menu-btn" class="icon-btn" title="Menu">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
             </button>
-            <button id="sleep-btn" class="icon-btn" title="Sleep Timer">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-            </button>
-            <button id="browse-btn" class="icon-btn" title="Browse">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            </button>
-            <button id="queue-btn" class="icon-btn" title="Queue">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
-            </button>
+            <div id="player-menu" style="display:none;position:absolute;right:0;top:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:4px;min-width:140px;z-index:50;box-shadow:0 4px 16px rgba(0,0,0,0.3)">
+              <button class="icon-btn player-menu-item" id="queue-btn" style="width:100%;justify-content:flex-start;gap:8px;padding:8px 10px;border-radius:6px;font-size:12px">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>Queue
+              </button>
+              <button class="icon-btn player-menu-item" id="browse-btn" style="width:100%;justify-content:flex-start;gap:8px;padding:8px 10px;border-radius:6px;font-size:12px">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Browse
+              </button>
+              <button class="icon-btn player-menu-item" id="history-btn" style="width:100%;justify-content:flex-start;gap:8px;padding:8px 10px;border-radius:6px;font-size:12px">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>History
+              </button>
+              <button class="icon-btn player-menu-item" id="sleep-btn" style="width:100%;justify-content:flex-start;gap:8px;padding:8px 10px;border-radius:6px;font-size:12px">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>Sleep Timer
+              </button>
+            </div>
           </div>
         </div>
 
@@ -249,16 +255,20 @@
         <div id="browse-list" class="queue-list"></div>
       </div>
     </div>
-    <!-- Theme Picker Overlay -->
+    <!-- Settings Overlay (Themes + Settings tabs) -->
     <div id="theme-overlay" class="theme-overlay">
       <div class="theme-picker">
-        <div class="theme-picker-title">
-          <span>Themes</span>
-          <button id="theme-close" class="icon-btn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-shrink:0">
+          <div style="display:flex;flex:1;border:1px solid var(--border);border-radius:6px;overflow:hidden">
+            <button class="browse-tab active" id="settings-tab-themes" style="flex:1;border-radius:0;padding:5px 0;font-size:11px;text-align:center">Themes</button>
+            <button class="browse-tab" id="settings-tab-settings" style="flex:1;border-radius:0;padding:5px 0;font-size:11px;text-align:center;border-left:1px solid var(--border)">Settings</button>
+          </div>
+          <button id="theme-close" class="icon-btn" style="flex-shrink:0;padding:4px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
           </button>
         </div>
-        <div class="theme-grid">
+        <!-- Themes Tab -->
+        <div id="settings-panel-themes" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;overflow-y:auto;flex:1;min-height:0">
           <div class="theme-card" data-theme-id="default">
             <div class="theme-card-preview" style="background:#0a0a0a;border:1px solid rgba(255,255,255,0.1)">
               <div class="theme-card-dot" style="background:#f0f0f0"></div>
@@ -348,13 +358,34 @@
             <div class="theme-card-name">Ziro</div>
           </div>
         </div>
-        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-size:12px">
-          <span>Start with Windows</span>
-          <label style="position:relative;width:36px;height:20px;cursor:pointer">
-            <input type="checkbox" id="auto-launch-toggle" style="opacity:0;width:0;height:0">
-            <span id="auto-launch-track" style="position:absolute;inset:0;background:var(--surface);border-radius:10px;transition:0.2s"></span>
-            <span id="auto-launch-thumb" style="position:absolute;top:2px;left:2px;width:16px;height:16px;background:var(--text-dim);border-radius:50%;transition:0.2s"></span>
-          </label>
+        <!-- Settings Tab -->
+        <!-- Positions Tab -->
+        <div id="settings-panel-settings" style="display:none;flex-direction:column;gap:12px;overflow-y:auto;flex:1;min-height:0">
+          <div style="display:flex;gap:4px;margin-bottom:4px">
+            <button class="browse-tab active" id="pos-tab-minibar">Minibar</button>
+            <button class="browse-tab" id="pos-tab-locket">Locket</button>
+          </div>
+            <div id="pos-grid-minibar" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px">
+              <button class="refresh-btn pos-btn" data-target="minibar" data-pos="top-left" style="font-size:10px;padding:6px">Top Left</button>
+              <button class="refresh-btn pos-btn" data-target="minibar" data-pos="top-center" style="font-size:10px;padding:6px">Top Center</button>
+              <button class="refresh-btn pos-btn" data-target="minibar" data-pos="top-right" style="font-size:10px;padding:6px">Top Right</button>
+              <button class="refresh-btn pos-btn" data-target="minibar" data-pos="bottom-left" style="font-size:10px;padding:6px">Bot Left</button>
+              <button class="refresh-btn pos-btn" data-target="minibar" data-pos="bottom-center" style="font-size:10px;padding:6px">Bot Center</button>
+              <button class="refresh-btn pos-btn" data-target="minibar" data-pos="bottom-right" style="font-size:10px;padding:6px">Bot Right</button>
+            </div>
+            <div id="pos-grid-locket" style="display:none;grid-template-columns:1fr 1fr 1fr;gap:4px">
+              <button class="refresh-btn pos-btn" data-target="locket" data-pos="top-left" style="font-size:10px;padding:6px">Top Left</button>
+              <button class="refresh-btn pos-btn" data-target="locket" data-pos="top-center" style="font-size:10px;padding:6px">Top Center</button>
+              <button class="refresh-btn pos-btn" data-target="locket" data-pos="top-right" style="font-size:10px;padding:6px">Top Right</button>
+              <button class="refresh-btn pos-btn" data-target="locket" data-pos="bottom-left" style="font-size:10px;padding:6px">Bot Left</button>
+              <button class="refresh-btn pos-btn" data-target="locket" data-pos="bottom-center" style="font-size:10px;padding:6px">Bot Center</button>
+              <button class="refresh-btn pos-btn" data-target="locket" data-pos="bottom-right" style="font-size:10px;padding:6px">Bot Right</button>
+            </div>
+          </div>
+          <div style="margin-top:8px;padding-top:10px;border-top:1px solid var(--border);box-sizing:border-box">
+            <button class="refresh-btn" id="startup-toggle-btn" style="font-size:10px;padding:8px;width:100%;text-align:center;box-sizing:border-box;margin:0">Launch on Startup: Off</button>
+            <input type="checkbox" id="auto-launch-toggle" style="display:none">
+          </div>
         </div>
       </div>
     </div>
@@ -388,21 +419,49 @@
       </div>
     </div>
 
-    <!-- Shortcuts Help -->
+    <!-- Shortcuts & Help -->
     <div id="shortcuts-overlay" class="theme-overlay">
-      <div class="theme-picker" style="width:280px">
+      <div class="theme-picker" style="width:300px;max-height:85%">
         <div class="theme-picker-title">
-          <span>Keyboard Shortcuts</span>
+          <span>Help</span>
           <button id="shortcuts-close" class="icon-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
         </div>
-        <div style="display:flex;flex-direction:column;gap:8px;font-size:12px">
-          <div style="display:flex;justify-content:space-between"><span>Toggle Minibar</span><kbd style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:11px">Ctrl+Shift+M</kbd></div>
-          <div style="display:flex;justify-content:space-between"><span>Play / Pause</span><kbd style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:11px">Media Play</kbd></div>
-          <div style="display:flex;justify-content:space-between"><span>Next Track</span><kbd style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:11px">Media Next</kbd></div>
-          <div style="display:flex;justify-content:space-between"><span>Previous Track</span><kbd style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:11px">Media Prev</kbd></div>
-          <div style="display:flex;justify-content:space-between"><span>Volume (minibar)</span><kbd style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:11px">Scroll Wheel</kbd></div>
-          <div style="display:flex;justify-content:space-between"><span>Vol 50% (quick)</span><kbd style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:11px">Dbl-Click Mute</kbd></div>
-          <div style="display:flex;justify-content:space-between"><span>Vol Presets</span><kbd style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:11px">Right-Click Mute</kbd></div>
+        <div style="overflow-y:auto;display:flex;flex-direction:column;gap:14px;font-size:12px">
+          <!-- Keyboard Shortcuts -->
+          <div>
+            <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:6px">Keyboard Shortcuts</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between"><span>Toggle Minibar</span><kbd style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:11px">Ctrl+Shift+M</kbd></div>
+              <div style="display:flex;justify-content:space-between"><span>Play / Pause</span><kbd style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:11px">Media Play</kbd></div>
+              <div style="display:flex;justify-content:space-between"><span>Next Track</span><kbd style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:11px">Media Next</kbd></div>
+              <div style="display:flex;justify-content:space-between"><span>Previous Track</span><kbd style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:11px">Media Prev</kbd></div>
+              <div style="display:flex;justify-content:space-between"><span>Play / Pause</span><kbd style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:11px">Space</kbd></div>
+              <div style="display:flex;justify-content:space-between"><span>Close overlay</span><kbd style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:11px">Escape</kbd></div>
+              <div style="display:flex;justify-content:space-between"><span>Volume (minibar)</span><kbd style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:11px">Scroll Wheel</kbd></div>
+              <div style="display:flex;justify-content:space-between"><span>Vol 50%</span><kbd style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:11px">Dbl-Click Mute</kbd></div>
+              <div style="display:flex;justify-content:space-between"><span>Vol Presets</span><kbd style="background:var(--surface);padding:2px 8px;border-radius:4px;font-size:11px">Right-Click Mute</kbd></div>
+            </div>
+          </div>
+          <!-- Gaming Notice -->
+          <div style="border-top:1px solid var(--border);padding-top:10px">
+            <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:6px">Gaming</div>
+            <p style="color:var(--text-dim);line-height:1.5;font-size:11px">The minibar and locket work with <strong style="color:var(--text)">borderless windowed</strong> and <strong style="color:var(--text)">windowed</strong> games. For <strong style="color:var(--text)">fullscreen exclusive</strong> games, the overlay cannot be displayed on top. Position the minibar where you want it before launching the game. To reposition, Alt+Tab out of the game, move the minibar, then switch back.</p>
+          </div>
+          <!-- Local Media Notice -->
+          <div style="border-top:1px solid var(--border);padding-top:10px">
+            <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:6px">Local Media Detection</div>
+            <p style="color:var(--text-dim);line-height:1.5;font-size:11px">Detects music playing in Spotify, YouTube Music, and other apps. Progress tracking may be limited for browser-based players (Chrome reports approximate position only). Desktop apps like Spotify provide full tracking.</p>
+          </div>
+          <!-- Spotify Notice -->
+          <div style="border-top:1px solid var(--border);padding-top:10px">
+            <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:6px">Spotify</div>
+            <p style="color:var(--text-dim);line-height:1.5;font-size:11px">Spotify API integration requires the app owner to have Spotify Premium. Playlist browsing, search, and playback control are available through the Spotify Web API with OAuth login.</p>
+          </div>
+          <!-- Platform Support -->
+          <div style="border-top:1px solid var(--border);padding-top:10px">
+            <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);margin-bottom:6px">Platform Support</div>
+            <p style="color:var(--text-dim);line-height:1.5;font-size:11px"><strong style="color:var(--text)">Windows</strong> — Full support via GSMTC<br><strong style="color:var(--text)">macOS</strong> — Spotify and Apple Music via AppleScript<br><strong style="color:var(--text)">Linux</strong> — Any MPRIS2 player via playerctl</p>
+          </div>
         </div>
       </div>
     </div>

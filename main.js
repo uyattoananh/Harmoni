@@ -144,7 +144,7 @@ function createLocketWindow() {
     alwaysOnTop: true,
     skipTaskbar: true,
     backgroundColor: '#00000000',
-    hasShadow: true,
+    hasShadow: false,
     x: savedPos ? savedPos.x : screenW - 320,
     y: savedPos ? savedPos.y : 20,
     webPreferences: {
@@ -155,6 +155,7 @@ function createLocketWindow() {
   });
 
   locketWindow.loadFile('renderer/locket.html');
+  locketWindow.setAlwaysOnTop(true, 'pop-up-menu');
   locketWindow.setIgnoreMouseEvents(false);
   locketWindow.webContents.on('did-finish-load', () => {
     locketWindow.webContents.send('theme-changed', store.get('theme', 'default'));
@@ -169,6 +170,7 @@ function createLocketWindow() {
 
   locketWindow.on('closed', () => {
     locketWindow = null;
+    if (mainWindow && !mainWindow.isDestroyed()) mainWindow.webContents.send('widget-closed', 'locket');
   });
 }
 
@@ -187,7 +189,7 @@ function createMinibarWindow() {
     alwaysOnTop: true,
     skipTaskbar: true,
     backgroundColor: '#00000000',
-    hasShadow: true,
+    hasShadow: false,
     x: savedPos ? savedPos.x : Math.floor((screenW - 360) / 2),
     y: savedPos ? savedPos.y : 12,
     webPreferences: {
@@ -198,6 +200,7 @@ function createMinibarWindow() {
   });
 
   minibarWindow.loadFile('renderer/minibar.html');
+  minibarWindow.setAlwaysOnTop(true, 'pop-up-menu');
   minibarWindow.setIgnoreMouseEvents(false);
   minibarWindow.webContents.on('did-finish-load', () => {
     minibarWindow.webContents.send('theme-changed', store.get('theme', 'default'));
@@ -214,6 +217,7 @@ function createMinibarWindow() {
   minibarWindow.on('closed', () => {
     minibarWindow = null;
     updateTrayMenu();
+    if (mainWindow && !mainWindow.isDestroyed()) mainWindow.webContents.send('widget-closed', 'minibar');
   });
 
   updateTrayMenu();
@@ -613,6 +617,19 @@ ipcMain.on('minibar-action', async (_, action) => {
   } catch (e) { /* ignore */ }
 });
 
+ipcMain.handle('ensure-minibar', () => {
+  if (!minibarWindow) createMinibarWindow();
+  return true;
+});
+
+ipcMain.handle('ensure-locket', () => {
+  if (!locketWindow) createLocketWindow();
+  return true;
+});
+
+ipcMain.handle('is-minibar-open', () => !!minibarWindow);
+ipcMain.handle('is-locket-open', () => !!locketWindow);
+
 ipcMain.on('toggle-locket', () => {
   if (locketWindow) {
     locketWindow.close();
@@ -634,32 +651,54 @@ ipcMain.on('launch-sonos', () => {
   launchSonosApp();
 });
 
+// Widget position presets
+ipcMain.on('set-widget-position', (_, target, pos) => {
+  const win = target === 'minibar' ? minibarWindow : locketWindow;
+  if (!win || win.isDestroyed()) return;
+
+  const { width: screenW, height: screenH } = screen.getPrimaryDisplay().workAreaSize;
+  const [winW, winH] = win.getSize();
+  const margin = 12;
+
+  const positions = {
+    'top-left':      [margin, margin],
+    'top-center':    [Math.floor((screenW - winW) / 2), margin],
+    'top-right':     [screenW - winW - margin, margin],
+    'bottom-left':   [margin, screenH - winH - margin],
+    'bottom-center': [Math.floor((screenW - winW) / 2), screenH - winH - margin],
+    'bottom-right':  [screenW - winW - margin, screenH - winH - margin],
+  };
+
+  const [x, y] = positions[pos] || positions['top-center'];
+  win.setPosition(x, y, true);
+});
+
 // Theme system
 const MINIBAR_SIZES = {
   default: { w: 360, h: 68 },
-  light:   { w: 420, h: 74 },
-  xp:      { w: 380, h: 72 },
+  light:   { w: 360, h: 74 },
+  xp:      { w: 360, h: 72 },
   vinyl:   { w: 360, h: 68 },
-  neon:    { w: 440, h: 74 },
+  neon:    { w: 380, h: 74 },
   radio:   { w: 340, h: 100 },
   retro:   { w: 360, h: 60 },
   terminal:  { w: 360, h: 60 },
-  bloom:     { w: 380, h: 74 },
-  starry:    { w: 380, h: 68 },
-  ziro:      { w: 380, h: 68 },
+  bloom:     { w: 360, h: 74 },
+  starry:    { w: 360, h: 68 },
+  ziro:      { w: 360, h: 68 },
 };
 const MINIBAR_LYRICS_HEIGHTS = {
-  default: { off: 68, mini: 132, full: 368 },
-  light:   { off: 74, mini: 138, full: 374 },
-  xp:      { off: 72, mini: 136, full: 372 },
-  vinyl:   { off: 68, mini: 132, full: 368 },
-  neon:    { off: 74, mini: 138, full: 374 },
-  radio:   { off: 100, mini: 164, full: 400 },
-  retro:   { off: 60, mini: 124, full: 360 },
-  terminal:  { off: 60, mini: 124, full: 360 },
-  bloom:     { off: 74, mini: 138, full: 374 },
-  starry:    { off: 68, mini: 132, full: 368 },
-  ziro:      { off: 68, mini: 132, full: 368 },
+  default: { off: 68, mini: 186, full: 368 },
+  light:   { off: 74, mini: 192, full: 374 },
+  xp:      { off: 72, mini: 190, full: 372 },
+  vinyl:   { off: 68, mini: 186, full: 368 },
+  neon:    { off: 74, mini: 192, full: 374 },
+  radio:   { off: 100, mini: 218, full: 400 },
+  retro:   { off: 60, mini: 178, full: 360 },
+  terminal:  { off: 60, mini: 178, full: 360 },
+  bloom:     { off: 74, mini: 192, full: 374 },
+  starry:    { off: 68, mini: 186, full: 368 },
+  ziro:      { off: 68, mini: 186, full: 368 },
 };
 
 const LOCKET_SIZES = {
@@ -678,18 +717,26 @@ const LOCKET_SIZES = {
 
 let currentTheme = 'default';
 
+let themeDebounce = null;
 ipcMain.on('set-theme', (_, theme) => {
   store.set('theme', theme);
   currentTheme = theme || 'default';
-  // Resize minibar and locket for new theme
-  if (minibarWindow && !minibarWindow.isDestroyed()) {
-    const size = MINIBAR_SIZES[currentTheme] || MINIBAR_SIZES.default;
-    minibarWindow.setSize(size.w, size.h, true);
-  }
-  if (locketWindow && !locketWindow.isDestroyed()) {
-    const size = LOCKET_SIZES[currentTheme] || LOCKET_SIZES.default;
-    locketWindow.setSize(size.w, size.h, true);
-  }
+
+  // Debounce resize to prevent rapid switching crashes
+  if (themeDebounce) clearTimeout(themeDebounce);
+  themeDebounce = setTimeout(() => {
+    try {
+      if (minibarWindow && !minibarWindow.isDestroyed()) {
+        const size = MINIBAR_SIZES[currentTheme] || MINIBAR_SIZES.default;
+        minibarWindow.setSize(size.w, size.h, true);
+      }
+      if (locketWindow && !locketWindow.isDestroyed()) {
+        const size = LOCKET_SIZES[currentTheme] || LOCKET_SIZES.default;
+        locketWindow.setSize(size.w, size.h, true);
+      }
+    } catch (e) { /* window might be mid-close */ }
+  }, 150);
+
   // Broadcast to all windows
   const allWindows = [mainWindow, locketWindow, minibarWindow];
   for (const win of allWindows) {
@@ -1219,18 +1266,28 @@ app.whenReady().then(() => {
   });
 });
 
-app.on('will-quit', () => {
+function cleanupAndQuit() {
+  if (pollInterval) clearInterval(pollInterval);
+  if (localPsFetchInterval) clearInterval(localPsFetchInterval);
+  if (localUiPushInterval) clearInterval(localUiPushInterval);
+  if (autoSwitchInterval) clearInterval(autoSwitchInterval);
   globalShortcut.unregisterAll();
+  if (tray) { tray.destroy(); tray = null; }
+}
+
+app.on('will-quit', () => {
+  cleanupAndQuit();
 });
 
 app.on('window-all-closed', () => {
-  // Don't quit — keep running in tray
+  if (process.platform === 'darwin') {
+    // macOS: keep running in tray
+  } else {
+    // Windows/Linux: don't quit, keep tray
+  }
 });
 
-app.on('before-quit', (e) => {
-  if (!app.isQuitting) {
-    e.preventDefault();
-  } else {
-    if (pollInterval) clearInterval(pollInterval);
-  }
+app.on('before-quit', () => {
+  app.isQuitting = true;
+  cleanupAndQuit();
 });

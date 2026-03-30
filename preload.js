@@ -85,4 +85,10 @@ contextBridge.exposeInMainWorld('windowControls', {
   closeMinibar: () => ipcRenderer.send('close-minibar'),
   openMain: () => ipcRenderer.send('open-main'),
   launchSonos: () => ipcRenderer.send('launch-sonos'),
+  setWidgetPosition: (target, pos) => ipcRenderer.send('set-widget-position', target, pos),
+  ensureMinibar: () => ipcRenderer.invoke('ensure-minibar'),
+  ensureLocket: () => ipcRenderer.invoke('ensure-locket'),
+  isMinibarOpen: () => ipcRenderer.invoke('is-minibar-open'),
+  isLocketOpen: () => ipcRenderer.invoke('is-locket-open'),
+  onWidgetClosed: (cb) => ipcRenderer.on('widget-closed', (_, target) => cb(target)),
 });

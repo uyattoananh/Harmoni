@@ -40,6 +40,78 @@ $('#theme-overlay').onclick = (e) => {
   if (e.target === e.currentTarget) $('#theme-overlay').classList.remove('open');
 };
 
+// Settings tabs: Themes | Positions | Startup
+document.getElementById('settings-tab-themes').addEventListener('click', (e) => {
+  e.stopPropagation();
+  document.getElementById('settings-tab-themes').classList.add('active');
+  document.getElementById('settings-tab-settings').classList.remove('active');
+  document.getElementById('settings-panel-themes').style.display = 'grid';
+  document.getElementById('settings-panel-settings').style.display = 'none';
+});
+document.getElementById('settings-tab-settings').addEventListener('click', async (e) => {
+  e.stopPropagation();
+  document.getElementById('settings-tab-settings').classList.add('active');
+  document.getElementById('settings-tab-themes').classList.remove('active');
+  document.getElementById('settings-panel-themes').style.display = 'none';
+  document.getElementById('settings-panel-settings').style.display = 'flex';
+  // Highlight tabs based on what's already open
+  const minibarOpen = await windowControls.isMinibarOpen();
+  const locketOpen = await windowControls.isLocketOpen();
+  if (minibarOpen) document.getElementById('pos-tab-minibar').classList.add('active');
+  else document.getElementById('pos-tab-minibar').classList.remove('active');
+  if (locketOpen) document.getElementById('pos-tab-locket').classList.add('active');
+  else document.getElementById('pos-tab-locket').classList.remove('active');
+  // Show the grid for whichever is open (prefer minibar)
+  if (minibarOpen) {
+    activePositionTarget = 'minibar';
+    document.getElementById('pos-grid-minibar').style.display = 'grid';
+    document.getElementById('pos-grid-locket').style.display = 'none';
+  } else if (locketOpen) {
+    activePositionTarget = 'locket';
+    document.getElementById('pos-grid-minibar').style.display = 'none';
+    document.getElementById('pos-grid-locket').style.display = 'grid';
+  }
+});
+
+// Startup toggle button
+document.getElementById('startup-toggle-btn').addEventListener('click', async () => {
+  const checkbox = document.getElementById('auto-launch-toggle');
+  checkbox.checked = !checkbox.checked;
+  sonos.setAutoLaunch(checkbox.checked);
+  document.getElementById('startup-toggle-btn').textContent = 'Launch on Startup: ' + (checkbox.checked ? 'On' : 'Off');
+});
+
+// Position widget tabs: Minibar | Locket
+let activePositionTarget = 'minibar';
+
+document.getElementById('pos-tab-minibar').addEventListener('click', () => {
+  activePositionTarget = 'minibar';
+  document.getElementById('pos-tab-minibar').classList.add('active');
+  document.getElementById('pos-tab-locket').classList.remove('active');
+  document.getElementById('pos-grid-minibar').style.display = 'grid';
+  document.getElementById('pos-grid-locket').style.display = 'none';
+  windowControls.ensureMinibar();
+});
+
+// Deselect tab when widget is closed
+windowControls.onWidgetClosed((target) => {
+  if (target === 'minibar' && activePositionTarget === 'minibar') {
+    document.getElementById('pos-tab-minibar').classList.remove('active');
+  }
+  if (target === 'locket' && activePositionTarget === 'locket') {
+    document.getElementById('pos-tab-locket').classList.remove('active');
+  }
+});
+
+document.getElementById('pos-tab-locket').addEventListener('click', () => {
+  activePositionTarget = 'locket';
+  document.getElementById('pos-tab-locket').classList.add('active');
+  document.getElementById('pos-tab-minibar').classList.remove('active');
+  document.getElementById('pos-grid-minibar').style.display = 'none';
+  document.getElementById('pos-grid-locket').style.display = 'grid';
+  windowControls.ensureLocket();
+});
+
 document.querySelectorAll('.theme-card').forEach(card => {
   card.onclick = () => {
     const theme = card.dataset.themeId;
@@ -66,6 +138,39 @@ sonos.onThemeChanged((theme) => {
     else { thumb.style.left = '2px'; thumb.style.background = 'var(--text-dim)'; track.style.background = 'var(--surface)'; }
   };
 })();
+
+// Position presets — use whichever tab is active
+document.querySelectorAll('.pos-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = activePositionTarget;
+    if (target === 'minibar') {
+      windowControls.ensureMinibar();
+    } else {
+      windowControls.ensureLocket();
+    }
+    setTimeout(() => {
+      windowControls.setWidgetPosition(target, btn.dataset.pos);
+    }, 500);
+  });
+});
+
+// Player menu dropdown
+$('#player-menu-btn').onclick = (e) => {
+  e.stopPropagation();
+  const menu = $('#player-menu');
+  menu.style.display = menu.style.display === 'none' ? '' : 'none';
+};
+document.addEventListener('click', () => {
+  $('#player-menu').style.display = 'none';
+});
+$('#player-menu').onclick = (e) => e.stopPropagation();
+
+// Close menu when any menu item is clicked
+document.querySelectorAll('.player-menu-item').forEach(item => {
+  item.addEventListener('click', () => {
+    $('#player-menu').style.display = 'none';
+  });
+});
 
 // Escape key closes all overlays
 document.addEventListener('keydown', (e) => {

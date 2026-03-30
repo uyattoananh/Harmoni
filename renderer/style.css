@@ -37,6 +37,7 @@ html, body {
   overflow: hidden;
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
+  position: relative;
 }
 
 /* ── Titlebar ── */
@@ -272,6 +273,10 @@ html, body {
   left: 50%;
   transform: translateX(-50%);
   pointer-events: none;
+  max-width: 50%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Icon buttons */
