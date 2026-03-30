@@ -234,7 +234,9 @@ document.addEventListener('keydown', (e) => {
     $('#shortcuts-overlay').classList.remove('open');
   }
   // Space for play/pause (when not typing in an input)
-  if (e.key === ' ' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+  const isTyping = e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable;
+  const overlayOpen = document.querySelector('.theme-overlay.open, .queue-overlay.open');
+  if (e.key === ' ' && !isTyping && !overlayOpen) {
     e.preventDefault();
     if ($('#files-player').style.display !== 'none' && audioPlayer.src) {
       $('#files-play-pause').click();
