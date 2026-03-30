@@ -51,7 +51,12 @@
       "allowToChangeInstallationDirectory": true
     },
     "mac": {
-      "target": ["dmg"],
+      "target": [
+        {
+          "target": "zip",
+          "arch": ["universal"]
+        }
+      ],
       "category": "public.app-category.music"
     },
     "linux": {

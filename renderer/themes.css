@@ -82,6 +82,7 @@
 [data-theme="light"] .lyrics-line { color: #ccc; }
 [data-theme="light"] .lyrics-line.active { color: #1a1a1a; }
 [data-theme="light"] .lyrics-line.past { color: #999; }
+[data-theme="light"] .lyrics-status { color: #000; }
 
 /* ─────────────────────────────────────────────────────────────
    WINDOWS XP — Authentic Luna Blue application window
@@ -768,6 +769,7 @@
 [data-theme="retro"] .lyrics-line { color: #bbb5a0; font-family: 'JetBrains Mono', monospace; }
 [data-theme="retro"] .lyrics-line.active { color: #000; }
 [data-theme="retro"] .lyrics-line.past { color: #888; }
+[data-theme="retro"] .lyrics-status { color: #000; }
 
 /* ─────────────────────────────────────────────────────────────
    TERMINAL — Dark green hacker terminal
@@ -1509,6 +1511,7 @@
 [data-theme="retro"] .lyrics-line { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #bbb5a0; }
 [data-theme="retro"] .lyrics-line.active { color: #000; }
 [data-theme="retro"] .lyrics-line.past { color: #888; }
+[data-theme="retro"] .lyrics-status { color: #000; }
 
 /* ══════════════════════════════════════════════════════════════
    LOCKET IDENTITY PER THEME

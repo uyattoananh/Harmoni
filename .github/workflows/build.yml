@@ -15,13 +15,10 @@ jobs:
         include:
           - os: windows-latest
             platform: win
-            ext: exe
           - os: macos-latest
             platform: mac
-            ext: app
           - os: ubuntu-latest
             platform: linux
-            ext: AppImage
 
     runs-on: ${{ matrix.os }}
 
@@ -44,12 +41,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: harmoni-${{ matrix.platform }}
-          path: |
-            dist/*.exe
-            dist/*.AppImage
-            dist/*.zip
-            dist/*.yml
-            dist/mac*/*.zip
+          path: dist/
+          retention-days: 1
 
   release:
     needs: build
@@ -59,11 +52,21 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: artifacts
+          merge-multiple: false
+
+      - name: List files
+        run: find artifacts -type f | head -30
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: artifacts/**/*
+          files: |
+            artifacts/**/*.exe
+            artifacts/**/*.zip
+            artifacts/**/*.AppImage
+            artifacts/**/*.dmg
+            artifacts/**/*.yml
+          fail_on_unmatched_files: false
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
