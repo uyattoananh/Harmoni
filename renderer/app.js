@@ -234,7 +234,7 @@ document.addEventListener('keydown', (e) => {
     $('#shortcuts-overlay').classList.remove('open');
   }
   // Space for play/pause (when not typing in an input)
-  if (e.key === ' ' && e.target.tagName !== 'INPUT') {
+  if (e.key === ' ' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
     e.preventDefault();
     if ($('#files-player').style.display !== 'none' && audioPlayer.src) {
       $('#files-play-pause').click();
