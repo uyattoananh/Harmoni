@@ -86,6 +86,7 @@ contextBridge.exposeInMainWorld('windowControls', {
   openMain: () => ipcRenderer.send('open-main'),
   launchSonos: () => ipcRenderer.send('launch-sonos'),
   quit: () => ipcRenderer.send('app-quit'),
+  openExternal: (url) => ipcRenderer.send('open-external', url),
   setWidgetPosition: (target, pos) => ipcRenderer.send('set-widget-position', target, pos),
   ensureMinibar: () => ipcRenderer.invoke('ensure-minibar'),
   ensureLocket: () => ipcRenderer.invoke('ensure-locket'),

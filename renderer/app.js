@@ -168,12 +168,12 @@ $('#player-menu').onclick = (e) => e.stopPropagation();
 // Quit button
 $('#quit-btn').onclick = () => windowControls.quit();
 
-// Bug report & suggestions — open GitHub issues in browser
+// Bug report & suggestions — open GitHub issues in default browser
 $('#bug-report-btn').onclick = () => {
-  window.open('https://github.com/uyattoananh/Harmoni/issues/new?template=bug_report.md&labels=bug', '_blank');
+  windowControls.openExternal('https://github.com/uyattoananh/Harmoni/issues/new?template=bug_report.md&labels=bug');
 };
 $('#suggest-btn').onclick = () => {
-  window.open('https://github.com/uyattoananh/Harmoni/issues/new?template=feature_request.md&labels=enhancement', '_blank');
+  windowControls.openExternal('https://github.com/uyattoananh/Harmoni/issues/new?template=feature_request.md&labels=enhancement');
 };
 
 // Close menu when any menu item is clicked

@@ -651,6 +651,11 @@ ipcMain.on('app-quit', () => {
   app.quit();
 });
 
+ipcMain.on('open-external', (_, url) => {
+  const { shell } = require('electron');
+  shell.openExternal(url);
+});
+
 // Widget position presets
 ipcMain.on('set-widget-position', (_, target, pos) => {
   const win = target === 'minibar' ? minibarWindow : locketWindow;
