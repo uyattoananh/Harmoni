@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Harmoni</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="themes.css">
+  <style>
+    :root {
+      --bg: rgba(8, 8, 8, 0.88);
+      --surface: rgba(255, 255, 255, 0.06);
+      --border: rgba(255,255,255,0.07);
+      --text: #f0f0f0;
+      --text-dim: rgba(255,255,255,0.5);
+      --white-10: rgba(255,255,255,0.1);
+      --play-btn-bg: rgba(255,255,255,0.12);
+      --play-btn-color: #fff;
+      --bar-radius: 24px;
+      --font-family: 'Inter', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      background: transparent;
+      font-family: var(--font-family);
+      color: var(--text);
+      overflow: hidden;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      gap: 4px;
+      padding: 10px 10px 0;
+      transition: opacity 0.5s ease;
+    }
+
+    /* ── Top bar ── */
+    .bar {
+      height: 48px;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 6px 0 4px;
+      background: var(--bg);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border: 1px solid var(--border);
+      border-radius: var(--bar-radius);
+      -webkit-app-region: drag;
+      cursor: grab;
+      position: relative;
+      flex-shrink: 0;
+      overflow: visible;
+    }
+
+    .bar-art {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--surface);
+      flex-shrink: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .bar-art.spinning { animation: spin 4s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .bar-art img { width: 100%; height: 100%; object-fit: cover; }
+    .bar-art svg { opacity: 0.3; }
+
+    .bar-info {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      position: relative;
+      height: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .bar-text {
+      display: inline-block;
+      white-space: nowrap;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 18px;
+    }
+    .bar-text .artist { color: rgba(255,255,255,0.45); font-weight: 400; }
+    .bar-text.scrolling {
+      animation: marquee var(--scroll-duration, 8s) linear infinite;
+    }
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      30%  { transform: translateX(0); }
+      100% { transform: translateX(calc(-50% - 20px)); }
+    }
+
+    .bar-progress {
+      width: 100%;
+      height: 2px;
+      border-radius: 1px;
+      background: rgba(255,255,255,0.08);
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+    .bar-progress-fill {
+      height: 100%;
+      background: rgba(255,255,255,0.5);
+      border-radius: 1px;
+      transition: width 1s linear;
+    }
+
+    .bar-controls {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      -webkit-app-region: no-drag;
+      flex-shrink: 0;
+    }
+    .bar-btn {
+      width: 28px; height: 28px;
+      border: none; background: transparent;
+      color: var(--text-dim);
+      cursor: pointer; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.1s; padding: 0;
+    }
+    .bar-btn:hover { color: #fff; background: rgba(255,255,255,0.1); }
+    .bar-btn.play {
+      width: 30px; height: 30px;
+      color: #fff; background: rgba(255,255,255,0.12);
+    }
+    .bar-btn.play:hover { background: rgba(255,255,255,0.22); }
+    .bar-btn.lyrics-toggle { font-size: 10px; font-weight: 700; letter-spacing: -0.5px; }
+    .bar-btn.lyrics-toggle.active, .bar-btn.active { color: #fff; background: rgba(255,255,255,0.15); }
+    .source-badge {
+      font-size: 8px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      position: absolute;
+      top: -1px;
+      left: 0;
+    }
+
+    .bar-hover-btn {
+      -webkit-app-region: no-drag;
+      position: absolute;
+      width: 18px; height: 18px;
+      border-radius: 50%; border: none;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.15s; padding: 0;
+    }
+    .bar:hover .bar-hover-btn { opacity: 1; }
+
+    .bar-close {
+      top: -6px; right: -6px;
+      background: rgba(255,60,60,0.9); color: #fff;
+    }
+    .bar-close:hover { background: #e53e3e; }
+
+    .bar-expand {
+      top: -6px; left: -6px;
+      background: rgba(255,255,255,0.25); color: #fff;
+    }
+    .bar-expand:hover { background: rgba(255,255,255,0.45); }
+
+    /* ── Lyrics panel ── */
+    .lyrics-panel {
+      flex: 1;
+      background: var(--bg);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      display: none;
+      flex-direction: column;
+    }
+    .lyrics-panel.open { display: flex; }
+    .lyrics-panel.mini {
+      display: flex;
+      max-height: 56px;
+      min-height: 56px;
+    }
+
+    .lyrics-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 20px;
+      scroll-behavior: smooth;
+      -webkit-app-region: drag;
+    }
+    .lyrics-panel.mini .lyrics-scroll {
+      overflow: hidden;
+      padding: 8px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .lyrics-line {
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.25);
+      transition: all 0.3s ease;
+      padding: 2px 0;
+    }
+    .lyrics-line.active {
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .lyrics-line.past {
+      color: rgba(255,255,255,0.4);
+    }
+
+    .lyrics-status {
+      padding: 20px;
+      text-align: center;
+      color: rgba(255,255,255,0.3);
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 2px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 1px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="bar">
+      <div class="bar-art" id="bar-art">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+      </div>
+      <div class="bar-info" id="bar-info">
+        <span class="source-badge" id="source-badge" style="display:none"></span>
+        <span class="bar-text" id="bar-text">No Track</span>
+        <div class="bar-progress"><div class="bar-progress-fill" id="bar-progress" style="width:0%"></div></div>
+      </div>
+      <div class="bar-controls">
+        <button class="bar-btn lyrics-toggle" id="lyrics-toggle" title="Toggle lyrics">Aa</button>
+        <button class="bar-btn" id="bar-prev">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+        </button>
+        <button class="bar-btn play" id="bar-play">
+          <svg id="b-play" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg id="b-pause" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        </button>
+        <button class="bar-btn" id="bar-next">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+        </button>
+      </div>
+      <button class="bar-hover-btn bar-close" id="bar-close" title="Close mini bar">
+        <svg width="8" height="8" viewBox="0 0 12 12" fill="currentColor"><path d="M1.41 0L0 1.41 4.59 6 0 10.59 1.41 12 6 7.41 10.59 12 12 10.59 7.41 6 12 1.41 10.59 0 6 4.59z"/></svg>
+      </button>
+    </div>
+
+    <div class="lyrics-panel" id="lyrics-panel">
+      <div class="lyrics-scroll" id="lyrics-scroll">
+        <div class="lyrics-status" id="lyrics-status">Toggle lyrics to see them here</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Theme
+    sonos.onThemeChanged((theme) => {
+      if (theme && theme !== 'default') {
+        document.documentElement.dataset.theme = theme;
+      } else {
+        delete document.documentElement.dataset.theme;
+      }
+    });
+
+    let isPlaying = false;
+    let lastArt = '';
+    let lyricsMode = 'off'; // 'off' | 'mini' | 'full'
+    let currentLyrics = null;
+    let lastLyricsTrack = '';
+
+    const barArt = document.getElementById('bar-art');
+    const barText = document.getElementById('bar-text');
+    const barInfo = document.getElementById('bar-info');
+    const barProgress = document.getElementById('bar-progress');
+    const lyricsPanel = document.getElementById('lyrics-panel');
+    const lyricsScroll = document.getElementById('lyrics-scroll');
+    const lyricsStatus = document.getElementById('lyrics-status');
+    const lyricsToggle = document.getElementById('lyrics-toggle');
+
+    // Volume scroll on minibar
+    document.querySelector('.bar').addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const delta = e.deltaY < 0 ? 5 : -5;
+      sonos.minibarVolumeScroll(delta);
+    }, { passive: false });
+
+    // Auto-hide when nothing playing
+    let autoHideTimeout = null;
+    let isBarVisible = true;
+    function checkAutoHide(state) {
+      if (state !== 'playing' && state !== 'paused') {
+        if (!autoHideTimeout) {
+          autoHideTimeout = setTimeout(() => {
+            document.querySelector('.container').style.opacity = '0.3';
+            isBarVisible = false;
+          }, 10000);
+        }
+      } else {
+        if (autoHideTimeout) { clearTimeout(autoHideTimeout); autoHideTimeout = null; }
+        if (!isBarVisible) {
+          document.querySelector('.container').style.opacity = '1';
+          isBarVisible = true;
+        }
+      }
+    }
+
+    // Controls
+    document.getElementById('bar-play').onclick = () => {
+      sonos.playPauseMinibar(isPlaying ? 'pause' : 'play');
+    };
+    document.getElementById('bar-prev').onclick = () => sonos.minibarAction('previous');
+    document.getElementById('bar-next').onclick = () => sonos.minibarAction('next');
+    document.getElementById('bar-close').onclick = () => windowControls.closeMinibar();
+
+    // Lyrics toggle: off → mini (2-line) → full → off
+    lyricsToggle.onclick = () => {
+      if (lyricsMode === 'off') {
+        lyricsMode = 'mini';
+        lyricsPanel.classList.add('open', 'mini');
+        lyricsToggle.classList.add('active');
+        sonos.resizeMinibar('mini');
+      } else if (lyricsMode === 'mini') {
+        lyricsMode = 'full';
+        lyricsPanel.classList.remove('mini');
+        lyricsToggle.classList.add('active');
+        sonos.resizeMinibar('full');
+      } else {
+        lyricsMode = 'off';
+        lyricsPanel.classList.remove('open', 'mini');
+        lyricsToggle.classList.remove('active');
+        sonos.resizeMinibar('off');
+      }
+    };
+
+    // Marquee
+    function setupMarquee() {
+      const containerWidth = barInfo.offsetWidth;
+      const textWidth = barText.scrollWidth;
+      if (textWidth > containerWidth) {
+        const gap = 40;
+        barText.innerHTML = barText.innerHTML + `<span style="padding-left:${gap}px"></span>` + barText.innerHTML;
+        const duration = Math.max(6, (textWidth / 40));
+        barText.style.setProperty('--scroll-duration', duration + 's');
+        barText.classList.add('scrolling');
+      } else {
+        barText.classList.remove('scrolling');
+      }
+    }
+
+    function parseDuration(str) {
+      if (typeof str === 'number') return str;
+      if (!str) return 0;
+      const parts = str.split(':').map(Number);
+      if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+      if (parts.length === 2) return parts[0] * 60 + parts[1];
+      return parts[0] || 0;
+    }
+
+    // Lyrics rendering
+    async function fetchLyrics(title, artist) {
+      const key = `${title}::${artist}`;
+      if (key === lastLyricsTrack) return;
+      lastLyricsTrack = key;
+
+      lyricsScroll.innerHTML = '<div class="lyrics-status">Searching lyrics...</div>';
+
+      try {
+        const result = await sonos.getLyrics(title, artist);
+        currentLyrics = result;
+
+        if (!result) {
+          lyricsScroll.innerHTML = '<div class="lyrics-status">No lyrics found</div>';
+          return;
+        }
+
+        if (result.type === 'synced' && result.lines.length > 0) {
+          renderSyncedLyrics(result.lines);
+        } else if (result.plain) {
+          renderPlainLyrics(result.plain);
+        } else {
+          lyricsScroll.innerHTML = '<div class="lyrics-status">No lyrics found</div>';
+        }
+      } catch (e) {
+        lyricsScroll.innerHTML = '<div class="lyrics-status">Could not load lyrics</div>';
+      }
+    }
+
+    function renderSyncedLyrics(lines) {
+      lyricsScroll.innerHTML = '';
+      lines.forEach((line, i) => {
+        const el = document.createElement('div');
+        el.className = 'lyrics-line';
+        el.textContent = line.text;
+        el.dataset.index = i;
+        el.dataset.time = line.time;
+        lyricsScroll.appendChild(el);
+      });
+    }
+
+    function renderPlainLyrics(text) {
+      lyricsScroll.innerHTML = '';
+      currentLyrics = { type: 'plain', lines: [], plain: text };
+      text.split('\n').forEach(line => {
+        if (line.trim()) {
+          const el = document.createElement('div');
+          el.className = 'lyrics-line past'; // just show all as visible
+          el.style.color = 'rgba(255,255,255,0.6)';
+          el.textContent = line;
+          lyricsScroll.appendChild(el);
+        }
+      });
+    }
+
+    function updateSyncedHighlight(positionSeconds) {
+      if (!currentLyrics || currentLyrics.type !== 'synced') return;
+      const lines = currentLyrics.lines;
+      const els = lyricsScroll.querySelectorAll('.lyrics-line');
+      if (els.length === 0) return;
+
+      let activeIndex = -1;
+      for (let i = lines.length - 1; i >= 0; i--) {
+        if (positionSeconds >= lines[i].time) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      if (lyricsMode === 'mini') {
+        // In mini mode, only show active + next line
+        els.forEach((el, i) => {
+          el.classList.remove('active', 'past');
+          if (i === activeIndex) {
+            el.classList.add('active');
+            el.style.display = '';
+          } else if (i === activeIndex + 1) {
+            el.style.display = '';
+          } else {
+            el.style.display = 'none';
+          }
+        });
+      } else {
+        // Full mode — show all, scroll to active
+        els.forEach((el, i) => {
+          el.style.display = '';
+          el.classList.remove('active', 'past');
+          if (i === activeIndex) {
+            el.classList.add('active');
+            const container = lyricsScroll;
+            const lineTop = el.offsetTop;
+            const lineHeight = el.offsetHeight;
+            const containerHeight = container.offsetHeight;
+            const scrollTarget = lineTop - (containerHeight / 2) + (lineHeight / 2);
+            container.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+          } else if (i < activeIndex) {
+            el.classList.add('past');
+          }
+        });
+      }
+    }
+
+    let lastTextContent = '';
+
+    sonos.onStateUpdate((data) => {
+      if (!data) return;
+
+      // Source badge
+      const badge = document.getElementById('source-badge');
+      if (data._sourceMode === 'local' && data._source) {
+        badge.textContent = data._source;
+        badge.style.display = '';
+      } else {
+        badge.style.display = 'none';
+      }
+
+      isPlaying = data.state === 'playing';
+      document.getElementById('b-play').style.display = isPlaying ? 'none' : 'block';
+      document.getElementById('b-pause').style.display = isPlaying ? 'block' : 'none';
+      checkAutoHide(data.state);
+
+      if (isPlaying) barArt.classList.add('spinning');
+      else barArt.classList.remove('spinning');
+
+      const track = data.currentTrack || {};
+      const title = track.title || 'No Track';
+      const artist = track.artist || '';
+      const newText = artist ? `${title}  ·  ${artist}` : title;
+
+      if (newText !== lastTextContent) {
+        lastTextContent = newText;
+        barText.innerHTML = artist
+          ? `${title} &nbsp;<span class="artist">· ${artist}</span>`
+          : title;
+        barText.classList.remove('scrolling');
+        requestAnimationFrame(() => requestAnimationFrame(setupMarquee));
+
+        // Fetch lyrics for new track
+        if (title !== 'No Track') {
+          fetchLyrics(title, artist);
+        }
+      }
+
+      // Album art
+      const artUrl = track.albumArtURI || '';
+      if (artUrl && artUrl !== lastArt) {
+        lastArt = artUrl;
+        let fullUrl = artUrl.startsWith('/') ? `http://${data._deviceIp || ''}:1400${artUrl}` : artUrl;
+        barArt.innerHTML = `<img src="${fullUrl}" onerror="this.style.display='none'">`;
+      } else if (!artUrl && lastArt) {
+        lastArt = '';
+        barArt.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>';
+      }
+
+      // Progress
+      const total = parseDuration(track.duration);
+      const pos = parseDuration(track.position);
+      if (track._noPosition) {
+        barProgress.style.width = '0%';
+      } else if (total > 0) {
+        barProgress.style.width = ((pos / total) * 100) + '%';
+      } else {
+        barProgress.style.width = '0%';
+      }
+
+      // Update synced lyrics highlight
+      updateSyncedHighlight(pos);
+    });
+  </script>
+</body>
+</html>

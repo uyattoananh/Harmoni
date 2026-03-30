@@ -1,0 +1,71 @@
+{
+  "name": "harmoni",
+  "version": "1.0.0",
+  "description": "A unified music controller with themes, Sonos, Spotify, local files, and more.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux",
+    "release": "electron-builder --win --publish always"
+  },
+  "keywords": ["music", "player", "sonos", "spotify", "themes"],
+  "author": "uyattoananh",
+  "license": "ISC",
+  "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uyattoananh/Harmoni.git"
+  },
+  "build": {
+    "appId": "com.harmoni.app",
+    "productName": "Harmoni",
+    "publish": {
+      "provider": "github",
+      "owner": "uyattoananh",
+      "repo": "Harmoni"
+    },
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "store.js",
+      "sonos-service.js",
+      "lyrics-service.js",
+      "media-session-service.js",
+      "local-files-service.js",
+      "spotify-service.js",
+      "renderer/**/*",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": ["nsis"],
+      "icon": null
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "mac": {
+      "target": ["dmg"],
+      "category": "public.app-category.music"
+    },
+    "linux": {
+      "target": ["AppImage"],
+      "category": "Audio"
+    }
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.3",
+    "music-metadata": "^11.12.3",
+    "sonos": "^1.14.3"
+  },
+  "devDependencies": {
+    "electron": "^41.1.0",
+    "electron-builder": "^25.1.8"
+  }
+}

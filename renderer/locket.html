@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Harmoni</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="themes.css">
+  <style>
+    :root {
+      --bg: rgba(10, 10, 10, 0.85);
+      --surface: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.08);
+      --text: #f0f0f0;
+      --text-dim: rgba(255,255,255,0.5);
+      --white-10: rgba(255,255,255,0.1);
+      --bar-radius: 16px;
+      --font-family: 'Inter', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      background: transparent;
+      font-family: var(--font-family);
+      color: var(--text);
+      overflow: hidden;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .locket {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: var(--bg);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border: 1px solid var(--border);
+      border-radius: var(--bar-radius);
+      -webkit-app-region: drag;
+      cursor: grab;
+      overflow: visible;
+      position: relative;
+    }
+
+    .locket-art {
+      width: 56px;
+      height: 56px;
+      border-radius: 10px;
+      background: var(--surface);
+      flex-shrink: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    }
+    .locket-art img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .locket-art svg {
+      opacity: 0.3;
+    }
+
+    .locket-info {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .locket-title {
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .locket-artist {
+      font-size: 11px;
+      color: var(--text-dim);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .locket-controls {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      -webkit-app-region: no-drag;
+    }
+    .locket-btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      color: var(--text-dim);
+      cursor: pointer;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.12s;
+    }
+    .locket-btn:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.1);
+    }
+    .locket-btn.play-btn-sm {
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      color: #fff;
+    }
+    .locket-btn.play-btn-sm:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .locket-expand {
+      -webkit-app-region: no-drag;
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 20px;
+      height: 20px;
+      border: none;
+      background: transparent;
+      color: rgba(255,255,255,0.2);
+      cursor: pointer;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.12s;
+      opacity: 0;
+    }
+    .locket:hover .locket-expand {
+      opacity: 1;
+    }
+    .locket-expand:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="locket" id="locket">
+    <div class="locket-art" id="locket-art">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+    </div>
+    <div class="locket-info">
+      <div class="locket-title" id="locket-title">No Track</div>
+      <div class="locket-artist" id="locket-artist">—</div>
+      <div class="locket-progress" style="width:100%;height:2px;background:var(--surface,rgba(255,255,255,0.1));margin-top:4px;border-radius:1px">
+        <div id="locket-progress-fill" style="height:100%;width:0%;background:var(--text-dim,rgba(255,255,255,0.4));border-radius:1px;transition:width 1s linear"></div>
+      </div>
+    </div>
+    <div class="locket-controls">
+      <button class="locket-btn" id="locket-prev">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+      </button>
+      <button class="locket-btn play-btn-sm" id="locket-play">
+        <svg id="l-play" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="l-pause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+      </button>
+      <button class="locket-btn" id="locket-next">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+      </button>
+    </div>
+    <button class="locket-expand" id="locket-sonos" title="Launch music app" style="top:4px;left:4px;right:auto">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    </button>
+    <button class="locket-expand" id="locket-expand" title="Open full player">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+    </button>
+  </div>
+
+  <script>
+    let isPlaying = false;
+    let deviceIp = null;
+    let lastArt = '';
+
+    // Theme
+    sonos.onThemeChanged((theme) => {
+      if (theme && theme !== 'default') {
+        document.documentElement.dataset.theme = theme;
+      } else {
+        delete document.documentElement.dataset.theme;
+      }
+    });
+
+    // Controls
+    document.getElementById('locket-play').onclick = () => {
+      sonos.playPauseMinibar(isPlaying ? 'pause' : 'play');
+    };
+    document.getElementById('locket-prev').onclick = () => sonos.minibarAction('previous');
+    document.getElementById('locket-next').onclick = () => sonos.minibarAction('next');
+
+    document.getElementById('locket-expand').onclick = () => {
+      windowControls.openMain();
+    };
+
+    document.getElementById('locket-sonos').onclick = () => {
+      windowControls.launchSonos();
+    };
+
+    // Receive state updates
+    sonos.onStateUpdate((data) => {
+      if (!data) return;
+
+      isPlaying = data.state === 'playing';
+      document.getElementById('l-play').style.display = isPlaying ? 'none' : 'block';
+      document.getElementById('l-pause').style.display = isPlaying ? 'block' : 'none';
+
+      const track = data.currentTrack || {};
+      document.getElementById('locket-title').textContent = track.title || 'No Track';
+      document.getElementById('locket-artist').textContent = track.artist || '—';
+
+      const artUrl = track.albumArtURI || '';
+      if (artUrl && artUrl !== lastArt) {
+        lastArt = artUrl;
+        let fullUrl = artUrl.startsWith('/') ? `http://${data._deviceIp || ''}:1400${artUrl}` : artUrl;
+        document.getElementById('locket-art').innerHTML = `<img src="${fullUrl}" onerror="this.style.display='none'">`;
+      } else if (!artUrl) {
+        lastArt = '';
+        document.getElementById('locket-art').innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>';
+      }
+
+      // Progress bar
+      function parseDur(str) {
+        if (typeof str === 'number') return str;
+        if (!str) return 0;
+        const p = str.split(':').map(Number);
+        if (p.length === 3) return p[0]*3600 + p[1]*60 + p[2];
+        if (p.length === 2) return p[0]*60 + p[1];
+        return p[0] || 0;
+      }
+      const total = parseDur(track.duration);
+      const pos = parseDur(track.position);
+      const fill = document.getElementById('locket-progress-fill');
+      if (total > 0 && !track._noPosition) {
+        fill.style.width = ((pos / total) * 100) + '%';
+      } else {
+        fill.style.width = '0%';
+      }
+    });
+  </script>
+</body>
+</html>
