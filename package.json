@@ -1,6 +1,6 @@
 {
   "name": "harmoni",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "A unified music controller with themes, Sonos, Spotify, local files, and more.",
   "main": "main.js",
   "scripts": {
