@@ -568,7 +568,9 @@ ipcMain.on('window-close', () => {
   updateTrayMenu();
 });
 
+let currentLyricsMode = 'off';
 ipcMain.on('minibar-resize', (_, mode) => {
+  currentLyricsMode = mode;
   if (!minibarWindow || minibarWindow.isDestroyed()) return;
   const [w] = minibarWindow.getSize();
   const heights = MINIBAR_LYRICS_HEIGHTS[currentTheme] || MINIBAR_LYRICS_HEIGHTS.default;
@@ -773,7 +775,9 @@ ipcMain.on('set-theme', (_, theme) => {
     try {
       if (minibarWindow && !minibarWindow.isDestroyed()) {
         const size = MINIBAR_SIZES[currentTheme] || MINIBAR_SIZES.default;
-        minibarWindow.setSize(size.w, size.h, true);
+        const heights = MINIBAR_LYRICS_HEIGHTS[currentTheme] || MINIBAR_LYRICS_HEIGHTS.default;
+        const h = heights[currentLyricsMode] || size.h;
+        minibarWindow.setSize(size.w, h, true);
       }
       if (locketWindow && !locketWindow.isDestroyed()) {
         const size = LOCKET_SIZES[currentTheme] || LOCKET_SIZES.default;
@@ -1305,7 +1309,10 @@ app.whenReady().then(() => {
   }, 5000);
 
   app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
+    if (mainWindow) {
+      mainWindow.show();
+      mainWindow.focus();
+    } else {
       createMainWindow();
     }
   });
