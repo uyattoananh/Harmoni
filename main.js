@@ -733,6 +733,9 @@ const MINIBAR_SIZES = {
   bloom:     { w: 360, h: 74 },
   starry:    { w: 360, h: 68 },
   ziro:      { w: 360, h: 68 },
+  glass:     { w: 360, h: 68 },
+  album:     { w: 360, h: 68 },
+  fade:      { w: 360, h: 68 },
 };
 const MINIBAR_LYRICS_HEIGHTS = {
   default: { off: 68, mini: 186, full: 368 },
@@ -746,6 +749,9 @@ const MINIBAR_LYRICS_HEIGHTS = {
   bloom:     { off: 74, mini: 192, full: 374 },
   starry:    { off: 68, mini: 186, full: 368 },
   ziro:      { off: 68, mini: 186, full: 368 },
+  glass:     { off: 68, mini: 186, full: 368 },
+  album:     { off: 68, mini: 186, full: 368 },
+  fade:      { off: 68, mini: 186, full: 368 },
 };
 
 const LOCKET_SIZES = {
@@ -760,6 +766,9 @@ const LOCKET_SIZES = {
   bloom:     { w: 300, h: 100 },
   starry:    { w: 300, h: 100 },
   ziro:      { w: 300, h: 100 },
+  glass:     { w: 300, h: 100 },
+  album:     { w: 300, h: 100 },
+  fade:      { w: 300, h: 100 },
 };
 
 let currentTheme = 'default';

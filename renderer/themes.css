@@ -1137,6 +1137,231 @@
 /* Progress uses accent color */
 [data-theme="ziro"] .progress-section .slider { height: 5px; }
 
+/* ─────────────────────────────────────────────────────────────
+   GLASS — Frosted glass panels over vivid album art
+   ───────────────────────────────────────────────────────────── */
+[data-theme="glass"] {
+  --bg: rgba(20, 20, 30, 0.35);
+  --surface: rgba(255, 255, 255, 0.08);
+  --surface-hover: rgba(255, 255, 255, 0.14);
+  --border: rgba(255, 255, 255, 0.15);
+  --text: #fff;
+  --text-dim: rgba(255, 255, 255, 0.65);
+  --white-10: rgba(255, 255, 255, 0.08);
+  --white-15: rgba(255, 255, 255, 0.12);
+  --play-btn-bg: rgba(255, 255, 255, 0.2);
+  --play-btn-color: #fff;
+  --close-btn-hover: rgba(255, 60, 60, 0.8);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+  --status-playing-bg: rgba(76, 217, 100, 0.15);
+  --status-playing-color: #4cd964;
+  --status-paused-bg: rgba(255, 204, 0, 0.15);
+  --status-paused-color: #fc0;
+  --font-family: 'Inter', -apple-system, sans-serif;
+  --bar-radius: 20px;
+  --art-radius: 16px;
+}
+/* Let the album art bleed through aggressively */
+[data-theme="glass"] .bg-art {
+  filter: blur(60px) saturate(2) brightness(0.5);
+  transform: scale(1.8);
+  opacity: 0.9;
+}
+[data-theme="glass"] .bg-overlay {
+  background: rgba(0, 0, 0, 0.25);
+}
+[data-theme="glass"] #app {
+  background: rgba(20, 20, 30, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(40px) saturate(1.5);
+  -webkit-backdrop-filter: blur(40px) saturate(1.5);
+}
+[data-theme="glass"] .titlebar {
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+/* Frosted glass album art card */
+[data-theme="glass"] .album-art {
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+/* Glass play button */
+[data-theme="glass"] .play-btn {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+[data-theme="glass"] .play-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+}
+/* Glass controls */
+[data-theme="glass"] .ctrl-btn { color: rgba(255, 255, 255, 0.7); }
+[data-theme="glass"] .ctrl-btn:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
+[data-theme="glass"] .mode-btn { color: rgba(255, 255, 255, 0.4); }
+[data-theme="glass"] .mode-btn.active { color: #fff; }
+[data-theme="glass"] .icon-btn:hover { background: rgba(255, 255, 255, 0.1); }
+/* Glass slider */
+[data-theme="glass"] .slider { background: rgba(255, 255, 255, 0.1); }
+[data-theme="glass"] .slider::-webkit-slider-thumb { background: #fff; box-shadow: 0 0 8px rgba(255, 255, 255, 0.3); }
+/* Track info */
+[data-theme="glass"] .track-title { color: #fff; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3); }
+[data-theme="glass"] .track-artist { color: rgba(255, 255, 255, 0.7); }
+/* Up next with glass background */
+[data-theme="glass"] .up-next-item:hover { background: rgba(255, 255, 255, 0.08); border-radius: 8px; }
+[data-theme="glass"] .up-next-label { color: rgba(255, 255, 255, 0.5); }
+/* Glass device cards */
+[data-theme="glass"] .device-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+[data-theme="glass"] .device-card:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+/* Glass refresh button */
+[data-theme="glass"] .refresh-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+[data-theme="glass"] .refresh-btn:hover { background: rgba(255, 255, 255, 0.12); }
+/* Glass queue/browse panels */
+[data-theme="glass"] .queue-overlay .queue-panel {
+  background: rgba(20, 20, 30, 0.7);
+  backdrop-filter: blur(40px);
+}
+[data-theme="glass"] .queue-head h3 { color: rgba(255, 255, 255, 0.8); }
+[data-theme="glass"] .queue-item:hover { background: rgba(255, 255, 255, 0.08); }
+/* Glass theme picker */
+[data-theme="glass"] .theme-picker {
+  background: rgba(20, 20, 30, 0.6);
+  backdrop-filter: blur(40px);
+}
+/* Glass volume */
+[data-theme="glass"] .volume-section .slider { background: rgba(255, 255, 255, 0.08); }
+[data-theme="glass"] .room-name { color: rgba(255, 255, 255, 0.6); }
+[data-theme="glass"] .time-row { color: rgba(255, 255, 255, 0.4); }
+[data-theme="glass"] .discovery-header h1 { color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+
+/* ─────────────────────────────────────────────────────────────
+   ALBUM — The album art IS the background
+   ───────────────────────────────────────────────────────────── */
+[data-theme="album"] {
+  --bg: rgba(0, 0, 0, 0.4);
+  --surface: rgba(0, 0, 0, 0.25);
+  --surface-hover: rgba(0, 0, 0, 0.35);
+  --border: rgba(255, 255, 255, 0.1);
+  --text: #fff;
+  --text-dim: rgba(255, 255, 255, 0.7);
+  --white-10: rgba(0, 0, 0, 0.2);
+  --white-15: rgba(0, 0, 0, 0.3);
+  --play-btn-bg: rgba(255, 255, 255, 0.9);
+  --play-btn-color: #000;
+  --close-btn-hover: rgba(255, 60, 60, 0.9);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+  --status-playing-bg: rgba(76, 217, 100, 0.2);
+  --status-playing-color: #4cd964;
+  --status-paused-bg: rgba(255, 204, 0, 0.2);
+  --status-paused-color: #fc0;
+  --font-family: 'Inter', -apple-system, sans-serif;
+  --bar-radius: 16px;
+  --art-radius: 10px;
+}
+/* Album art as FULL unblurred background — the art IS the player */
+[data-theme="album"] .bg-art {
+  filter: blur(2px) saturate(1.1) brightness(0.7);
+  transform: scale(1.3);
+  opacity: 1;
+}
+[data-theme="album"] .bg-overlay {
+  background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.85) 100%);
+}
+[data-theme="album"] #app {
+  background: transparent;
+  border: none;
+  backdrop-filter: none;
+}
+[data-theme="album"] .titlebar { background: none; }
+/* Hide album art thumbnail — the background IS the art */
+[data-theme="album"] .album-art-wrapper { display: none; }
+/* Push content to bottom — track info floats over the art */
+[data-theme="album"] .player-content {
+  justify-content: flex-end;
+  background: none;
+}
+/* Large bold track info at the bottom */
+[data-theme="album"] .track-info {
+  text-align: left;
+  padding: 0 4px 8px;
+}
+[data-theme="album"] .track-title {
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+[data-theme="album"] .track-artist {
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.5);
+  font-size: 15px;
+}
+/* Controls — flat at the bottom */
+[data-theme="album"] .controls {
+  background: none;
+  padding-bottom: 8px;
+  gap: 24px;
+}
+[data-theme="album"] .play-btn {
+  border-radius: 50%;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+[data-theme="album"] .play-btn:hover {
+  box-shadow: 0 6px 28px rgba(0,0,0,0.5);
+  transform: scale(1.06);
+}
+/* Progress */
+[data-theme="album"] .progress-section { padding: 0 4px 8px; }
+[data-theme="album"] .time-row { color: rgba(255,255,255,0.4); text-shadow: 0 1px 4px rgba(0,0,0,0.5); }
+[data-theme="album"] .room-name { color: rgba(255,255,255,0.5); text-shadow: 0 1px 4px rgba(0,0,0,0.5); }
+/* Up next — compact, semi-transparent */
+[data-theme="album"] .up-next {
+  background: rgba(0,0,0,0.3);
+  border-radius: 10px;
+  padding: 8px;
+  margin: 0 -4px;
+  backdrop-filter: blur(10px);
+}
+[data-theme="album"] .up-next-label { color: rgba(255,255,255,0.4); }
+[data-theme="album"] .up-next-item:hover { background: rgba(255,255,255,0.08); }
+[data-theme="album"] .up-next-item-title { text-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+/* Volume */
+[data-theme="album"] .slider { background: rgba(255,255,255,0.12); }
+[data-theme="album"] .slider::-webkit-slider-thumb { background: #fff; box-shadow: 0 0 8px rgba(0,0,0,0.3); }
+/* Buttons */
+[data-theme="album"] .ctrl-btn { color: rgba(255,255,255,0.8); }
+[data-theme="album"] .ctrl-btn:hover { color: #fff; }
+[data-theme="album"] .mode-btn { color: rgba(255,255,255,0.35); }
+[data-theme="album"] .mode-btn.active { color: #fff; }
+[data-theme="album"] .icon-btn { color: rgba(255,255,255,0.5); }
+[data-theme="album"] .icon-btn:hover { color: #fff; background: rgba(0,0,0,0.2); }
+/* Queue/browse */
+[data-theme="album"] .queue-overlay .queue-panel { background: rgba(0,0,0,0.75); backdrop-filter: blur(30px); }
+[data-theme="album"] .queue-head h3 { color: rgba(255,255,255,0.8); }
+[data-theme="album"] .queue-item:hover { background: rgba(255,255,255,0.08); }
+/* Theme picker */
+[data-theme="album"] .theme-picker { background: rgba(0,0,0,0.65); backdrop-filter: blur(30px); }
+/* Device cards */
+[data-theme="album"] .device-card { background: rgba(0,0,0,0.3); border-color: rgba(255,255,255,0.08); }
+[data-theme="album"] .device-card:hover { background: rgba(0,0,0,0.4); }
+[data-theme="album"] .refresh-btn { background: rgba(0,0,0,0.3); border-color: rgba(255,255,255,0.08); }
+[data-theme="album"] .discovery-header h1 { color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,0.5); }
+
 /* ══════════════════════════════════════════════════════════════
    MINIBAR IDENTITY PER THEME
    ══════════════════════════════════════════════════════════════ */
@@ -1513,6 +1738,131 @@
 [data-theme="retro"] .lyrics-line.past { color: #888; }
 [data-theme="retro"] .lyrics-status { color: #000; }
 
+/* ─────────────────────────────────────────────────────────────
+   FADE — Album art background with heavy dark fade
+   ───────────────────────────────────────────────────────────── */
+[data-theme="fade"] {
+  --bg: rgba(0, 0, 0, 0.4);
+  --surface: rgba(0, 0, 0, 0.25);
+  --surface-hover: rgba(0, 0, 0, 0.35);
+  --border: rgba(255, 255, 255, 0.1);
+  --text: #fff;
+  --text-dim: rgba(255, 255, 255, 0.7);
+  --white-10: rgba(0, 0, 0, 0.2);
+  --white-15: rgba(0, 0, 0, 0.3);
+  --play-btn-bg: rgba(255, 255, 255, 0.9);
+  --play-btn-color: #000;
+  --close-btn-hover: rgba(255, 60, 60, 0.9);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+  --font-family: 'Inter', -apple-system, sans-serif;
+  --bar-radius: 16px;
+  --art-radius: 10px;
+}
+[data-theme="fade"] .bg-art {
+  filter: blur(20px) saturate(1.3) brightness(0.6);
+  transform: scale(2.5);
+  opacity: 1;
+}
+[data-theme="fade"] .bg-overlay {
+  background: rgba(0, 0, 0, 0.3);
+}
+[data-theme="fade"] #app {
+  background: transparent;
+  border: none;
+  backdrop-filter: none;
+}
+[data-theme="fade"] .titlebar { background: none; }
+[data-theme="fade"] .album-art {
+  width: 180px; height: 180px;
+  border: 2px solid rgba(255,255,255,0.12);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+[data-theme="fade"] .controls {
+  background: rgba(0,0,0,0.2); border-radius: 14px;
+  padding: 10px 0; margin: 0 -8px; backdrop-filter: blur(10px);
+}
+[data-theme="fade"] .up-next {
+  background: rgba(0,0,0,0.2); border-radius: 12px;
+  padding: 10px; margin: 0 -8px; backdrop-filter: blur(10px);
+}
+[data-theme="fade"] .track-title { color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+[data-theme="fade"] .track-artist { color: rgba(255,255,255,0.7); text-shadow: 0 1px 6px rgba(0,0,0,0.5); }
+[data-theme="fade"] .room-name { color: rgba(255,255,255,0.5); }
+[data-theme="fade"] .time-row { color: rgba(255,255,255,0.4); }
+[data-theme="fade"] .slider { background: rgba(255,255,255,0.12); }
+[data-theme="fade"] .slider::-webkit-slider-thumb { background: #fff; }
+[data-theme="fade"] .icon-btn:hover { background: rgba(0,0,0,0.2); }
+[data-theme="fade"] .queue-overlay .queue-panel { background: rgba(0,0,0,0.75); backdrop-filter: blur(30px); }
+[data-theme="fade"] .theme-picker { background: rgba(0,0,0,0.7); backdrop-filter: blur(30px); }
+[data-theme="fade"] .device-card { background: rgba(0,0,0,0.3); border-color: rgba(255,255,255,0.08); }
+[data-theme="fade"] .discovery-header h1 { color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,0.5); }
+
+/* ── Glass Minibar ── */
+[data-theme="glass"] .bar {
+  background: rgba(20,20,30,0.3); border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(30px) saturate(1.5); -webkit-backdrop-filter: blur(30px) saturate(1.5);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+[data-theme="glass"] .bar-text { color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+[data-theme="glass"] .bar-text .artist { color: rgba(255,255,255,0.6); }
+[data-theme="glass"] .bar-progress { background: rgba(255,255,255,0.1); }
+[data-theme="glass"] .bar-progress-fill { background: rgba(255,255,255,0.6); }
+[data-theme="glass"] .bar-btn { color: rgba(255,255,255,0.6); }
+[data-theme="glass"] .bar-btn:hover { color: #fff; background: rgba(255,255,255,0.12); }
+[data-theme="glass"] .bar-btn.play { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); }
+[data-theme="glass"] .bar-close { background: rgba(255,60,60,0.7); }
+[data-theme="glass"] .lyrics-panel { background: rgba(20,20,30,0.5); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(30px); }
+[data-theme="glass"] .lyrics-line { color: rgba(255,255,255,0.35); }
+[data-theme="glass"] .lyrics-line.active { color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,0.3); }
+[data-theme="glass"] .lyrics-line.past { color: rgba(255,255,255,0.5); }
+
+/* ── Fade Minibar — album art color wash matching main player ── */
+[data-theme="fade"] .bar {
+  border: none;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  background-size: cover; background-position: center;
+  position: relative; overflow: hidden;
+}
+[data-theme="fade"] .bar::after {
+  content: ''; position: absolute; inset: -30px;
+  background: inherit; background-size: cover; background-position: center;
+  filter: blur(20px) brightness(0.6) saturate(1.3);
+  z-index: 0; pointer-events: none;
+}
+[data-theme="fade"] .bar > * { position: relative; z-index: 1; }
+[data-theme="fade"] .bar-text { color: #fff; }
+[data-theme="fade"] .bar-text .artist { color: rgba(255,255,255,0.6); }
+[data-theme="fade"] .bar-progress { background: rgba(255,255,255,0.1); }
+[data-theme="fade"] .bar-progress-fill { background: rgba(255,255,255,0.7); }
+[data-theme="fade"] .bar-btn { color: rgba(255,255,255,0.6); }
+[data-theme="fade"] .bar-btn:hover { color: #fff; background: rgba(255,255,255,0.1); }
+[data-theme="fade"] .bar-btn.play { background: rgba(255,255,255,0.9); color: #000; }
+[data-theme="fade"] .bar-close { background: rgba(255,60,60,0.8); }
+[data-theme="fade"] .lyrics-panel { background: rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.08); }
+[data-theme="fade"] .lyrics-line { color: rgba(255,255,255,0.3); }
+[data-theme="fade"] .lyrics-line.active { color: #fff; }
+[data-theme="fade"] .lyrics-line.past { color: rgba(255,255,255,0.5); }
+
+/* ── Album Minibar — dark transparent over any bg ── */
+[data-theme="album"] .bar {
+  background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  padding-left: 14px;
+}
+[data-theme="album"] .bar-text { color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.4); }
+[data-theme="album"] .bar-text .artist { color: rgba(255,255,255,0.6); }
+[data-theme="album"] .bar-progress { background: rgba(255,255,255,0.1); }
+[data-theme="album"] .bar-progress-fill { background: rgba(255,255,255,0.7); }
+[data-theme="album"] .bar-btn { color: rgba(255,255,255,0.6); }
+[data-theme="album"] .bar-btn:hover { color: #fff; background: rgba(255,255,255,0.1); }
+[data-theme="album"] .bar-btn.play { background: rgba(255,255,255,0.9); color: #000; }
+[data-theme="album"] .bar-close { background: rgba(255,60,60,0.8); }
+[data-theme="album"] .lyrics-panel { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(20px); }
+[data-theme="album"] .lyrics-line { color: rgba(255,255,255,0.3); }
+[data-theme="album"] .lyrics-line.active { color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
+[data-theme="album"] .lyrics-line.past { color: rgba(255,255,255,0.5); }
+
 /* ══════════════════════════════════════════════════════════════
    LOCKET IDENTITY PER THEME
    ══════════════════════════════════════════════════════════════ */
@@ -1773,6 +2123,57 @@
 [data-theme="terminal"] .locket-btn.play-btn-sm { background: #1db954; color: #000; border-radius: 0; box-shadow: 0 0 6px rgba(29,185,84,0.2); }
 [data-theme="terminal"] .locket-expand { color: #0d8a3a; border-radius: 0; }
 [data-theme="terminal"] .locket-expand:hover { color: #1db954; background: #141414; }
+
+/* ── Glass Locket ── */
+[data-theme="glass"] .locket {
+  background: rgba(20,20,30,0.3); border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(30px) saturate(1.5); -webkit-backdrop-filter: blur(30px) saturate(1.5);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+[data-theme="glass"] .locket-art { box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+[data-theme="glass"] .locket-title { color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+[data-theme="glass"] .locket-artist { color: rgba(255,255,255,0.6); }
+[data-theme="glass"] .locket-btn { color: rgba(255,255,255,0.6); }
+[data-theme="glass"] .locket-btn:hover { color: #fff; background: rgba(255,255,255,0.1); }
+[data-theme="glass"] .locket-btn.play-btn-sm { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); color: #fff; }
+[data-theme="glass"] .locket-expand { color: rgba(255,255,255,0.3); }
+[data-theme="glass"] .locket-expand:hover { color: #fff; background: rgba(255,255,255,0.1); }
+
+/* ── Fade Locket — album art color wash matching main player ── */
+[data-theme="fade"] .locket {
+  border: none;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  background-size: cover; background-position: center;
+  position: relative; overflow: hidden;
+}
+[data-theme="fade"] .locket::after {
+  content: ''; position: absolute; inset: -30px;
+  background: inherit; background-size: cover; background-position: center;
+  filter: blur(20px) brightness(0.6) saturate(1.3);
+  z-index: 0; pointer-events: none;
+}
+[data-theme="fade"] .locket > * { position: relative; z-index: 1; }
+[data-theme="fade"] .locket-title { color: #fff; }
+[data-theme="fade"] .locket-artist { color: rgba(255,255,255,0.6); }
+[data-theme="fade"] .locket-btn { color: rgba(255,255,255,0.6); }
+[data-theme="fade"] .locket-btn:hover { color: #fff; background: rgba(255,255,255,0.1); }
+[data-theme="fade"] .locket-btn.play-btn-sm { background: rgba(255,255,255,0.9); color: #000; }
+[data-theme="fade"] .locket-expand { color: rgba(255,255,255,0.3); }
+
+/* ── Album Locket ── */
+[data-theme="album"] .locket {
+  background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+[data-theme="album"] .locket-art { box-shadow: 0 2px 10px rgba(0,0,0,0.4); }
+[data-theme="album"] .locket-title { color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.4); }
+[data-theme="album"] .locket-artist { color: rgba(255,255,255,0.6); }
+[data-theme="album"] .locket-btn { color: rgba(255,255,255,0.6); }
+[data-theme="album"] .locket-btn:hover { color: #fff; background: rgba(255,255,255,0.1); }
+[data-theme="album"] .locket-btn.play-btn-sm { background: rgba(255,255,255,0.9); color: #000; }
+[data-theme="album"] .locket-expand { color: rgba(255,255,255,0.3); }
+[data-theme="album"] .locket-expand:hover { color: #fff; background: rgba(255,255,255,0.1); }
 
 /* ══════════════════════════════════════════════════════════════
    THEME-AWARE COMMON OVERRIDES

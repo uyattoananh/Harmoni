@@ -301,6 +301,15 @@
       } else {
         delete document.documentElement.dataset.theme;
       }
+      // Clear album art background if not album/fade theme
+      if (theme !== 'album' && theme !== 'fade') {
+        document.querySelector('.bar').style.backgroundImage = '';
+        barArt.style.display = '';
+      } else if (theme === 'album') {
+        barArt.style.display = 'none';
+      } else {
+        barArt.style.display = '';
+      }
     });
 
     let isPlaying = false;
@@ -540,6 +549,18 @@
       if (artUrl && artUrl !== lastArt) {
         lastArt = artUrl;
         let fullUrl = artUrl.startsWith('/') ? `http://${data._deviceIp || ''}:1400${artUrl}` : artUrl;
+
+        // Album/Fade theme — set bar background to album art
+        const theme = document.documentElement.dataset.theme;
+        if (theme === 'album' || theme === 'fade') {
+          document.querySelector('.bar').style.backgroundImage = `url('${fullUrl}')`;
+          document.querySelector('.bar').style.backgroundSize = 'cover';
+          document.querySelector('.bar').style.backgroundPosition = 'center';
+        }
+        // Album only — hide album art element (Fade keeps it)
+        if (theme === 'album') {
+          barArt.style.display = 'none';
+        }
         barArt.innerHTML = `<img src="${fullUrl}" onerror="this.style.display='none'">`;
       } else if (!artUrl && lastArt) {
         lastArt = '';
