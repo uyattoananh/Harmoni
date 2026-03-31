@@ -186,6 +186,7 @@
     let isPlaying = false;
     let deviceIp = null;
     let lastArt = '';
+    let lastArtFullUrl = '';
 
     // Theme
     sonos.onThemeChanged((theme) => {
@@ -194,12 +195,16 @@
       } else {
         delete document.documentElement.dataset.theme;
       }
-      if (theme !== 'album' && theme !== 'fade') {
-        document.getElementById('locket').style.backgroundImage = '';
-        document.getElementById('locket-art').style.display = '';
-      } else if (theme === 'album') {
-        document.getElementById('locket-art').style.display = 'none';
+      if (theme === 'album' || theme === 'fade') {
+        // Re-apply current art as background
+        if (lastArtFullUrl) {
+          document.getElementById('locket').style.backgroundImage = `url('${lastArtFullUrl}')`;
+          document.getElementById('locket').style.backgroundSize = 'cover';
+          document.getElementById('locket').style.backgroundPosition = 'center';
+        }
+        document.getElementById('locket-art').style.display = theme === 'album' ? 'none' : '';
       } else {
+        document.getElementById('locket').style.backgroundImage = '';
         document.getElementById('locket-art').style.display = '';
       }
     });
@@ -235,6 +240,7 @@
       if (artUrl && artUrl !== lastArt) {
         lastArt = artUrl;
         let fullUrl = artUrl.startsWith('/') ? `http://${data._deviceIp || ''}:1400${artUrl}` : artUrl;
+        lastArtFullUrl = fullUrl;
         document.getElementById('locket-art').innerHTML = `<img src="${fullUrl}" onerror="this.style.display='none'">`;
         // Album/Fade theme — set locket background to album art, hide art element
         const theme = document.documentElement.dataset.theme;
