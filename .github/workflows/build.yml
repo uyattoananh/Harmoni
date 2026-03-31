@@ -36,3 +36,5 @@ jobs:
         run: npx electron-builder --${{ matrix.platform }} --publish always
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Skip code signing on macOS (no Apple Developer cert)
+          CSC_IDENTITY_AUTO_DISCOVERY: false
