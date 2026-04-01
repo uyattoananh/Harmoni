@@ -576,10 +576,14 @@ let currentLyricsMode = 'off';
 ipcMain.on('minibar-resize', (_, mode) => {
   currentLyricsMode = mode;
   if (!minibarWindow || minibarWindow.isDestroyed()) return;
-  const [w] = minibarWindow.getSize();
+  const size = MINIBAR_SIZES[currentTheme] || MINIBAR_SIZES.default;
   const heights = MINIBAR_LYRICS_HEIGHTS[currentTheme] || MINIBAR_LYRICS_HEIGHTS.default;
   const newHeight = heights[mode] || heights.off;
-  minibarWindow.setSize(w, newHeight, true);
+  const newWidth = size.w;
+  console.log(`Minibar resize: mode=${mode} theme=${currentTheme} w=${newWidth} h=${newHeight}`);
+  const [x, y] = minibarWindow.getPosition();
+  minibarWindow.setBounds({ x, y, width: newWidth, height: newHeight }, false);
+  minibarWindow.setContentSize(newWidth, newHeight, false);
 });
 
 ipcMain.on('toggle-minibar', () => {
@@ -710,7 +714,20 @@ ipcMain.on('set-widget-position', (_, target, pos) => {
   if (!win || win.isDestroyed()) return;
 
   const { width: screenW, height: screenH } = screen.getPrimaryDisplay().workAreaSize;
-  const [winW, winH] = win.getSize();
+  // Use theme's base size, not current window size (lyrics may have enlarged it)
+  let winW, winH;
+  if (target === 'minibar') {
+    const size = MINIBAR_SIZES[currentTheme] || MINIBAR_SIZES.default;
+    const heights = MINIBAR_LYRICS_HEIGHTS[currentTheme] || MINIBAR_LYRICS_HEIGHTS.default;
+    winW = size.w;
+    winH = currentLyricsMode === 'off' ? size.h : (heights[currentLyricsMode] || size.h);
+    // Also force the window to this size
+    win.setSize(winW, winH, false);
+  } else {
+    const size = LOCKET_SIZES[currentTheme] || LOCKET_SIZES.default;
+    winW = size.w;
+    winH = size.h;
+  }
   const margin = 12;
 
   const positions = {

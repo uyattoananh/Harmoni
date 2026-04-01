@@ -79,10 +79,10 @@
 [data-theme="light"] .locket-artist { color: #888; }
 /* Lyrics panel */
 [data-theme="light"] .lyrics-panel { background: #f5f5f7; border-color: #d0d0d5; }
-[data-theme="light"] .lyrics-line { color: #ccc; }
-[data-theme="light"] .lyrics-line.active { color: #1a1a1a; }
-[data-theme="light"] .lyrics-line.past { color: #999; }
-[data-theme="light"] .lyrics-status { color: #000; }
+[data-theme="light"] .lyrics-line { color: #bbb !important; }
+[data-theme="light"] .lyrics-line.active { color: #1a1a1a !important; }
+[data-theme="light"] .lyrics-line.past { color: #888 !important; }
+[data-theme="light"] .lyrics-status { color: #000 !important; }
 
 /* ─────────────────────────────────────────────────────────────
    WINDOWS XP — Authentic Luna Blue application window
@@ -222,9 +222,9 @@
 [data-theme="xp"] .bar-text { color: #000; }
 [data-theme="xp"] .bar-text .artist { color: #4a4a4a; }
 [data-theme="xp"] .lyrics-panel { background: #ece9d8; border: 2px solid #0054e3; border-radius: 4px; backdrop-filter: none; }
-[data-theme="xp"] .lyrics-line { color: #bbb; }
-[data-theme="xp"] .lyrics-line.active { color: #000; }
-[data-theme="xp"] .lyrics-line.past { color: #808080; }
+[data-theme="xp"] .lyrics-line { color: #808080 !important; }
+[data-theme="xp"] .lyrics-line.active { color: #000 !important; }
+[data-theme="xp"] .lyrics-line.past { color: #999 !important; }
 /* Locket */
 [data-theme="xp"] .locket {
   background: #ece9d8; border: 2px solid #0054e3; border-radius: 4px;
@@ -766,9 +766,9 @@
 /* Progress bar — dark */
 [data-theme="retro"] .progress-section .slider { background: #ddd5b0; }
 /* Lyrics */
-[data-theme="retro"] .lyrics-line { color: #bbb5a0; font-family: 'JetBrains Mono', monospace; }
-[data-theme="retro"] .lyrics-line.active { color: #000; }
-[data-theme="retro"] .lyrics-line.past { color: #888; }
+[data-theme="retro"] .lyrics-line { color: #999 !important; font-family: 'JetBrains Mono', monospace; }
+[data-theme="retro"] .lyrics-line.active { color: #000 !important; }
+[data-theme="retro"] .lyrics-line.past { color: #777 !important; }
 [data-theme="retro"] .lyrics-status { color: #000; }
 
 /* ─────────────────────────────────────────────────────────────

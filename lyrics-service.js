@@ -43,8 +43,8 @@ class LyricsService {
               return;
             }
 
-            // Pick best match
-            const best = results[0];
+            // Pick best match — prefer synced lyrics
+            const best = results.find(r => r.syncedLyrics) || results[0];
 
             if (best.syncedLyrics) {
               // Parse synced LRC format
