@@ -341,23 +341,27 @@ ipcMain.handle('get-state', async (_, ip) => {
 });
 
 ipcMain.handle('play', async (_, ip) => {
-  if (sourceMode === 'local') return mediaSessionService.controlMedia('play');
-  return sonosService.play(ip);
+  if (sourceMode === 'local') { await mediaSessionService.controlMedia('play'); setTimeout(forceLocalRefresh, 500); return; }
+  await sonosService.play(ip);
+  setTimeout(() => pushStateNow(ip), 200);
 });
 
 ipcMain.handle('pause', async (_, ip) => {
-  if (sourceMode === 'local') return mediaSessionService.controlMedia('pause');
-  return sonosService.pause(ip);
+  if (sourceMode === 'local') { await mediaSessionService.controlMedia('pause'); setTimeout(forceLocalRefresh, 500); return; }
+  await sonosService.pause(ip);
+  setTimeout(() => pushStateNow(ip), 200);
 });
 
 ipcMain.handle('next', async (_, ip) => {
-  if (sourceMode === 'local') return mediaSessionService.controlMedia('next');
-  return sonosService.next(ip);
+  if (sourceMode === 'local') { await mediaSessionService.controlMedia('next'); setTimeout(forceLocalRefresh, 500); return; }
+  await sonosService.next(ip);
+  setTimeout(() => pushStateNow(ip), 200);
 });
 
 ipcMain.handle('previous', async (_, ip) => {
-  if (sourceMode === 'local') return mediaSessionService.controlMedia('previous');
-  return sonosService.previous(ip);
+  if (sourceMode === 'local') { await mediaSessionService.controlMedia('previous'); setTimeout(forceLocalRefresh, 500); return; }
+  await sonosService.previous(ip);
+  setTimeout(() => pushStateNow(ip), 200);
 });
 
 ipcMain.handle('set-volume', async (_, ip, volume) => {
@@ -593,6 +597,7 @@ ipcMain.on('close-minibar', () => {
 ipcMain.on('minibar-play-pause', async (_, action) => {
   if (sourceMode === 'local') {
     try { await mediaSessionService.controlMedia(action === 'pause' ? 'pause' : 'play'); } catch (e) { /* ignore */ }
+    setTimeout(forceLocalRefresh, 500);
     return;
   }
   if (!activeDeviceIp) return;
@@ -605,6 +610,7 @@ ipcMain.on('minibar-play-pause', async (_, action) => {
 ipcMain.on('minibar-action', async (_, action) => {
   if (sourceMode === 'local') {
     try { await mediaSessionService.controlMedia(action); } catch (e) { /* ignore */ }
+    setTimeout(forceLocalRefresh, 500);
     return;
   }
   if (!activeDeviceIp) return;
@@ -837,6 +843,34 @@ let localArtCache = {};     // { "title::artist": artUrl }
 let localPsFetchInterval = null;
 let localUiPushInterval = null;
 
+// Force an immediate local media state refresh after a control command
+async function forceLocalRefresh() {
+  try {
+    const session = await mediaSessionService.getCurrentSession();
+    if (session) {
+      if (!localSession || localSession.title !== session.title || localSession.artist !== session.artist) {
+        localAnchorPos = session.position;
+        localAnchorTime = Date.now();
+        fetchLocalAlbumArt(session.title, session.artist);
+        addToHistory({ title: session.title, artist: session.artist, album: session.album });
+      }
+      localSession = session;
+    }
+    // Push state immediately
+    const artKey = localSession ? `${localSession.title}::${localSession.artist}` : '';
+    const artUrl = localArtCache[artKey] || '';
+    const state = localSession ? {
+      state: localSession.state, volume: 0, muted: false,
+      currentTrack: { title: localSession.title, artist: localSession.artist, album: localSession.album, albumArtURI: artUrl, duration: localSession.duration, position: localSession.position, _noPosition: localSession.position === 0 },
+      _source: localSession.sourceName, _sourceMode: 'local',
+    } : { state: 'stopped', volume: 0, muted: false, currentTrack: {}, _source: 'None', _sourceMode: 'local' };
+
+    if (mainWindow && !mainWindow.isDestroyed()) mainWindow.webContents.send('state-update', state);
+    if (locketWindow && !locketWindow.isDestroyed()) locketWindow.webContents.send('state-update', state);
+    if (minibarWindow && !minibarWindow.isDestroyed()) minibarWindow.webContents.send('state-update', state);
+  } catch (e) { /* ignore */ }
+}
+
 function startLocalPolling() {
   stopLocalPolling();
 
@@ -990,6 +1024,18 @@ let pollInterval = null;
 let activeDeviceIp = null;
 let reconnectAttempts = 0;
 const MAX_RECONNECT = 10;
+
+// Immediately fetch and push state to all windows
+async function pushStateNow(ip) {
+  if (!ip) return;
+  try {
+    const state = await sonosService.getState(ip);
+    state._deviceIp = ip;
+    if (mainWindow && !mainWindow.isDestroyed()) mainWindow.webContents.send('state-update', state);
+    if (locketWindow && !locketWindow.isDestroyed()) locketWindow.webContents.send('state-update', state);
+    if (minibarWindow && !minibarWindow.isDestroyed()) minibarWindow.webContents.send('state-update', state);
+  } catch (e) { /* ignore */ }
+}
 
 ipcMain.on('watch-device', (_, ip) => {
   activeDeviceIp = ip;

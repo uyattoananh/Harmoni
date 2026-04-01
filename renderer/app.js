@@ -341,11 +341,36 @@ $('#play-pause-btn').onclick = async () => {
 };
 
 $('#next-btn').onclick = async () => {
-  if (activeDevice || localMediaMode) await sonos.next(activeDevice ? activeDevice.ip : null);
+  if (!activeDevice && !localMediaMode) return;
+  // Optimistic: if we have cached queue, show next track instantly
+  if (cachedQueue && cachedQueue.items && cachedQueue.items.length > 0) {
+    const curTitle = $('#track-title').textContent;
+    let curIdx = cachedQueue.items.findIndex(t => t.title === curTitle);
+    if (curIdx === -1) curIdx = 0;
+    const nextIdx = (curIdx + 1) % cachedQueue.items.length;
+    const next = cachedQueue.items[nextIdx];
+    if (next) {
+      $('#track-title').textContent = next.title || 'Loading...';
+      $('#track-artist').textContent = next.artist || '';
+    }
+  }
+  await sonos.next(activeDevice ? activeDevice.ip : null);
 };
 
 $('#prev-btn').onclick = async () => {
-  if (activeDevice || localMediaMode) await sonos.previous(activeDevice ? activeDevice.ip : null);
+  if (!activeDevice && !localMediaMode) return;
+  if (cachedQueue && cachedQueue.items && cachedQueue.items.length > 0) {
+    const curTitle = $('#track-title').textContent;
+    let curIdx = cachedQueue.items.findIndex(t => t.title === curTitle);
+    if (curIdx === -1) curIdx = 0;
+    const prevIdx = (curIdx - 1 + cachedQueue.items.length) % cachedQueue.items.length;
+    const prev = cachedQueue.items[prevIdx];
+    if (prev) {
+      $('#track-title').textContent = prev.title || 'Loading...';
+      $('#track-artist').textContent = prev.artist || '';
+    }
+  }
+  await sonos.previous(activeDevice ? activeDevice.ip : null);
 };
 
 // Sonos play modes: NORMAL, SHUFFLE_NOREPEAT, SHUFFLE, REPEAT_ALL, REPEAT_ONE, SHUFFLE_REPEAT_ONE
