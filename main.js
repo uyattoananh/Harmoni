@@ -7,6 +7,7 @@ const LyricsService = require('./lyrics-service');
 const MediaSessionService = require('./media-session-service');
 const LocalFilesService = require('./local-files-service');
 const SpotifyService = require('./spotify-service');
+const DiscordService = require('./discord-service');
 const Store = require('./store');
 
 // Single instance lock
@@ -34,6 +35,7 @@ const lyricsService = new LyricsService();
 const mediaSessionService = new MediaSessionService();
 const localFilesService = new LocalFilesService();
 let spotifyService = null; // initialized after store is ready
+let discordService = null;
 
 // Track change detection for notifications
 let lastTrackTitle = '';
@@ -57,14 +59,8 @@ function launchSonosApp() {
 
 // ── Create a 16x16 tray icon programmatically ──
 function createTrayIcon() {
-  const size = 16;
-  const canvas = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 16 16">
-    <rect x="3" y="5" width="3" height="6" rx="0.5" fill="white"/>
-    <polygon points="6,5 10,2 10,14 6,11" fill="white"/>
-    <path d="M12 5.5c0.8 0.8 1.2 1.8 1.2 2.5s-0.4 1.7-1.2 2.5" stroke="white" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-  </svg>`;
-  const encoded = Buffer.from(canvas).toString('base64');
-  return nativeImage.createFromDataURL(`data:image/svg+xml;base64,${encoded}`);
+  const iconPath = path.join(__dirname, 'icon.png');
+  return nativeImage.createFromPath(iconPath).resize({ width: 16, height: 16 });
 }
 
 function createMainWindow() {
@@ -85,6 +81,7 @@ function createMainWindow() {
     resizable: true,
     backgroundColor: '#00000000',
     hasShadow: true,
+    icon: path.join(__dirname, 'icon.png'),
     x, y,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -654,6 +651,17 @@ ipcMain.on('open-main', () => {
   }
 });
 
+// Discord Rich Presence
+ipcMain.handle('discord-is-enabled', () => discordService ? discordService.isEnabled() : false);
+
+ipcMain.on('discord-enable', async () => {
+  if (discordService) await discordService.enable();
+});
+
+ipcMain.on('discord-disable', () => {
+  if (discordService) discordService.disable();
+});
+
 ipcMain.on('launch-sonos', () => {
   launchSonosApp();
 });
@@ -870,6 +878,7 @@ async function forceLocalRefresh() {
         localAnchorTime = Date.now();
         fetchLocalAlbumArt(session.title, session.artist);
         addToHistory({ title: session.title, artist: session.artist, album: session.album });
+        if (discordService) discordService.updatePresence({ title: session.title, artist: session.artist, album: session.album, duration: session.duration, position: session.position }, session.sourceName || 'Local');
       }
       localSession = session;
     }
@@ -1066,11 +1075,12 @@ ipcMain.on('watch-device', (_, ip) => {
       const state = await sonosService.getState(activeDeviceIp);
       reconnectAttempts = 0; // reset on success
 
-      // Track change notification + history
+      // Track change notification + history + Discord
       const newTitle = state.currentTrack?.title || '';
       if (newTitle && newTitle !== lastTrackTitle) {
         if (lastTrackTitle !== '') showTrackNotification(state.currentTrack);
         addToHistory(state.currentTrack);
+        if (discordService) discordService.updatePresence(state.currentTrack, 'Sonos');
       }
       lastTrackTitle = newTitle;
 
@@ -1297,7 +1307,19 @@ ipcMain.handle('get-auto-launch', () => {
 });
 
 ipcMain.on('set-auto-launch', (_, enabled) => {
-  app.setLoginItemSettings({ openAtLogin: enabled });
+  const isDev = !app.isPackaged;
+  if (isDev) {
+    // Dev mode: register electron.exe with app dir as argument
+    const electronPath = path.join(__dirname, 'node_modules', 'electron', 'dist', 'electron.exe');
+    app.setLoginItemSettings({
+      openAtLogin: enabled,
+      path: electronPath,
+      args: [path.resolve(__dirname)],
+    });
+  } else {
+    // Packaged: just use default (Harmoni.exe knows where it is)
+    app.setLoginItemSettings({ openAtLogin: enabled });
+  }
 });
 
 // ── Minibar volume scroll ──
@@ -1337,6 +1359,8 @@ app.whenReady().then(() => {
   store = new Store();
   currentTheme = store.get('theme', 'default');
   spotifyService = new SpotifyService(store);
+  discordService = new DiscordService(store);
+  if (discordService.isEnabled()) discordService.connect();
 
   createMainWindow();
   createTray();
@@ -1397,6 +1421,7 @@ function cleanupAndQuit() {
   if (autoSwitchInterval) clearInterval(autoSwitchInterval);
   globalShortcut.unregisterAll();
   if (tray) { tray.destroy(); tray = null; }
+  if (discordService) discordService.disconnect();
 }
 
 app.on('will-quit', () => {

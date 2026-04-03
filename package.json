@@ -1,6 +1,6 @@
 {
   "name": "harmoni",
-  "version": "1.4.3",
+  "version": "1.5.0",
   "description": "A unified music controller with themes, Sonos, Spotify, local files, and more.",
   "main": "main.js",
   "scripts": {
@@ -11,7 +11,13 @@
     "build:linux": "electron-builder --linux",
     "release": "electron-builder --win --publish always"
   },
-  "keywords": ["music", "player", "sonos", "spotify", "themes"],
+  "keywords": [
+    "music",
+    "player",
+    "sonos",
+    "spotify",
+    "themes"
+  ],
   "author": "uyattoananh",
   "license": "ISC",
   "type": "commonjs",
@@ -39,12 +45,15 @@
       "media-session-service.js",
       "local-files-service.js",
       "spotify-service.js",
+      "discord-service.js",
       "renderer/**/*",
       "node_modules/**/*"
     ],
     "win": {
-      "target": ["nsis"],
-      "icon": null
+      "target": [
+        "nsis"
+      ],
+      "icon": "icon.png"
     },
     "nsis": {
       "oneClick": false,
@@ -53,25 +62,21 @@
     "mac": {
       "target": [
         {
-          "target": "dmg",
-          "arch": ["arm64", "x64"]
-        },
-        {
           "target": "zip",
           "arch": ["arm64", "x64"]
         }
       ],
-      "category": "public.app-category.music",
-      "identity": null,
-      "hardenedRuntime": false,
-      "gatekeeperAssess": false
+      "category": "public.app-category.music"
     },
     "linux": {
-      "target": ["AppImage"],
+      "target": [
+        "AppImage"
+      ],
       "category": "Audio"
     }
   },
   "dependencies": {
+    "discord-rpc": "^4.0.1",
     "electron-updater": "^6.8.3",
     "music-metadata": "^11.12.3",
     "sonos": "^1.14.3"

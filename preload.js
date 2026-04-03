@@ -51,6 +51,10 @@ contextBridge.exposeInMainWorld('sonos', {
   setVolumePreset: (vol) => ipcRenderer.send('set-volume-preset', vol),
   // History
   getHistory: () => ipcRenderer.invoke('get-history'),
+  // Discord
+  discordIsEnabled: () => ipcRenderer.invoke('discord-is-enabled'),
+  discordEnable: () => ipcRenderer.send('discord-enable'),
+  discordDisable: () => ipcRenderer.send('discord-disable'),
   // Spotify
   spotifyLogin: () => ipcRenderer.invoke('spotify-login'),
   spotifyLogout: () => ipcRenderer.invoke('spotify-logout'),

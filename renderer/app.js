@@ -74,6 +74,27 @@ document.getElementById('settings-tab-settings').addEventListener('click', async
 });
 
 // Startup toggle button
+// Load startup + discord state on boot
+(async () => {
+  const isEnabled = await sonos.getAutoLaunch();
+  document.getElementById('auto-launch-toggle').checked = isEnabled;
+  document.getElementById('startup-toggle-btn').textContent = 'Launch on Startup: ' + (isEnabled ? 'On' : 'Off');
+
+  const discordEnabled = await sonos.discordIsEnabled();
+  document.getElementById('discord-toggle-btn').textContent = 'Discord Rich Presence: ' + (discordEnabled ? 'On' : 'Off');
+})();
+
+document.getElementById('discord-toggle-btn').addEventListener('click', async () => {
+  const isEnabled = await sonos.discordIsEnabled();
+  if (isEnabled) {
+    sonos.discordDisable();
+    document.getElementById('discord-toggle-btn').textContent = 'Discord Rich Presence: Off';
+  } else {
+    sonos.discordEnable();
+    document.getElementById('discord-toggle-btn').textContent = 'Discord Rich Presence: On';
+  }
+});
+
 document.getElementById('startup-toggle-btn').addEventListener('click', async () => {
   const checkbox = document.getElementById('auto-launch-toggle');
   checkbox.checked = !checkbox.checked;
