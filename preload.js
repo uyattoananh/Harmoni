@@ -79,6 +79,10 @@ contextBridge.exposeInMainWorld('sonos', {
   getMusicFolder: () => ipcRenderer.invoke('get-music-folder'),
   searchLocalFiles: (query) => ipcRenderer.invoke('search-local-files', query),
   getLocalAlbums: () => ipcRenderer.invoke('get-local-albums'),
+  // Changelog
+  getAppVersion: () => ipcRenderer.invoke('get-app-version'),
+  getLastSeenVersion: () => ipcRenderer.invoke('get-last-seen-version'),
+  markChangelogSeen: (v) => ipcRenderer.send('mark-changelog-seen', v),
 });
 
 contextBridge.exposeInMainWorld('windowControls', {

@@ -651,6 +651,13 @@ ipcMain.on('open-main', () => {
   }
 });
 
+// Changelog / version tracking
+ipcMain.handle('get-app-version', () => {
+  try { return require(path.join(__dirname, 'package.json')).version; } catch (e) { return '0.0.0'; }
+});
+ipcMain.handle('get-last-seen-version', () => store.get('lastSeenVersion', null));
+ipcMain.on('mark-changelog-seen', (_, version) => { store.set('lastSeenVersion', version); });
+
 // Discord Rich Presence
 ipcMain.handle('discord-is-enabled', () => discordService ? discordService.isEnabled() : false);
 

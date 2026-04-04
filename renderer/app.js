@@ -237,6 +237,94 @@ $('#fb-submit').onclick = async () => {
   $('#fb-submit').disabled = false;
 };
 
+// Changelog / What's New
+const CHANGELOG = [
+  { version: '1.5.3', date: '2026-04-03', changes: [
+    'Discord Rich Presence — shows what you\'re listening to',
+    'New hand-drawn app icon',
+    'Fixed lyrics colors in Retro/Light/XP themes',
+    'Fixed minibar sizing when toggling lyrics',
+    'Instant track updates on play/pause/next/prev',
+  ]},
+  { version: '1.4.3', date: '2026-04-01', changes: [
+    'Glass, Album, and Fade themes',
+    'Settings panel with Themes and Settings tabs',
+    'Minibar and Locket position presets',
+    'Auto-launch on startup option',
+  ]},
+  { version: '1.4.0', date: '2026-03-31', changes: [
+    'Starry Night, Ziro, Bloom, and Retro themes',
+    'Local file playback (MP3, FLAC, M4A, OGG, WAV)',
+    'Album browser for local files',
+    'Hamburger menu replaces header buttons',
+  ]},
+  { version: '1.3.0', date: '2026-03-30', changes: [
+    'Spotify integration with OAuth login',
+    'Spotify playlists, liked songs, and search',
+    'History panel — recently played tracks',
+    'Sleep timer',
+  ]},
+  { version: '1.2.0', date: '2026-03-29', changes: [
+    'Vinyl, Neon, Radio, and Windows XP themes',
+    'Theme-specific visual identities (not just color swaps)',
+    'Locket widget — compact square overlay',
+  ]},
+  { version: '1.1.0', date: '2026-03-28', changes: [
+    'Minibar overlay — always-on-top compact player',
+    'Synced lyrics with LRCLIB',
+    'Lyrics panel in minibar (collapsible)',
+    'Local media detection (YouTube Music, Spotify desktop, etc.)',
+  ]},
+  { version: '1.0.0', date: '2026-03-27', changes: [
+    'Initial release',
+    'Sonos speaker discovery and control',
+    'Play, pause, next, previous, volume, seek',
+    'Queue management and favorites',
+    'Dark glass theme with album art background',
+  ]},
+];
+
+function renderChangelog() {
+  const list = $('#changelog-list');
+  list.innerHTML = CHANGELOG.map((entry, i) => `
+    <div class="changelog-entry">
+      <div class="changelog-header">
+        <span class="changelog-version${i === 0 ? ' latest' : ''}">${entry.version}</span>
+        <span class="changelog-date">${entry.date}</span>
+      </div>
+      <ul class="changelog-changes">
+        ${entry.changes.map(c => `<li>${c}</li>`).join('')}
+      </ul>
+    </div>
+  `).join('');
+}
+
+$('#changelog-close').onclick = () => $('#changelog-overlay').classList.remove('open');
+$('#changelog-overlay').onclick = (e) => { if (e.target === e.currentTarget) $('#changelog-overlay').classList.remove('open'); };
+$('#changelog-got-it').onclick = () => {
+  $('#changelog-overlay').classList.remove('open');
+  sonos.getAppVersion().then(version => {
+    if (version) sonos.markChangelogSeen(version);
+  }).catch(() => {});
+};
+
+$('#whats-new-btn').onclick = () => {
+  renderChangelog();
+  $('#changelog-overlay').classList.add('open');
+};
+
+// Check on launch if we should show changelog
+(async () => {
+  const [currentVersion, lastSeen] = await Promise.all([
+    sonos.getAppVersion(),
+    sonos.getLastSeenVersion(),
+  ]);
+  if (currentVersion && currentVersion !== lastSeen) {
+    renderChangelog();
+    $('#changelog-overlay').classList.add('open');
+  }
+})();
+
 // Close menu when any menu item is clicked
 document.querySelectorAll('.player-menu-item').forEach(item => {
   item.addEventListener('click', () => {
@@ -253,6 +341,7 @@ document.addEventListener('keydown', (e) => {
     $('#sleep-overlay').classList.remove('open');
     $('#history-overlay').classList.remove('open');
     $('#shortcuts-overlay').classList.remove('open');
+    $('#changelog-overlay').classList.remove('open');
   }
   // Space for play/pause (when not typing in an input)
   const isTyping = e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable;

@@ -147,6 +147,9 @@
               <button class="icon-btn player-menu-item" id="sleep-btn" style="width:100%;justify-content:flex-start;gap:8px;padding:8px 10px;border-radius:6px;font-size:12px">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>Sleep Timer
               </button>
+              <button class="icon-btn player-menu-item" id="whats-new-btn" style="width:100%;justify-content:flex-start;gap:8px;padding:8px 10px;border-radius:6px;font-size:12px">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>What's New
+              </button>
               <div style="height:1px;background:var(--border);margin:4px 0"></div>
               <button class="icon-btn player-menu-item" id="feedback-btn" style="width:100%;justify-content:flex-start;gap:8px;padding:8px 10px;border-radius:6px;font-size:12px">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Feedback
@@ -493,6 +496,19 @@
             <p style="color:var(--text-dim);line-height:1.5;font-size:11px"><strong style="color:var(--text)">Windows</strong> — Full support via GSMTC<br><strong style="color:var(--text)">macOS</strong> — Spotify and Apple Music via AppleScript<br><strong style="color:var(--text)">Linux</strong> — Any MPRIS2 player via playerctl</p>
           </div>
         </div>
+      </div>
+    </div>
+    <!-- Changelog / What's New Overlay -->
+    <div id="changelog-overlay" class="theme-overlay" style="display:flex;align-items:center;justify-content:center">
+      <div class="theme-picker changelog-picker">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-shrink:0">
+          <span style="font-size:15px;font-weight:600">What's New</span>
+          <button id="changelog-close" class="icon-btn" style="padding:4px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div id="changelog-list" class="changelog-list"></div>
+        <button class="refresh-btn" id="changelog-got-it" style="margin-top:10px;padding:10px;font-size:12px;font-weight:600;text-align:center;flex-shrink:0">Got It</button>
       </div>
     </div>
     <!-- Feedback Overlay -->
