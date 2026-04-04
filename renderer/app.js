@@ -250,6 +250,20 @@ $('#fb-submit').onclick = async () => {
 
 // Changelog / What's New
 const CHANGELOG = [
+  { version: '1.5.8', date: '2026-04-04', changes: [
+    'Album/Fade themes: lyrics panel now shows blurred album art background',
+    'Discord connection status indicator in settings',
+  ]},
+  { version: '1.5.7', date: '2026-04-03', changes: [
+    'Fixed macOS "app is damaged" error with ad-hoc code signing',
+  ]},
+  { version: '1.5.5', date: '2026-04-03', changes: [
+    'macOS DMG installer restored for better install experience',
+  ]},
+  { version: '1.5.4', date: '2026-04-03', changes: [
+    'In-app patch notes popup — shows automatically after updates',
+    'Version history accessible via hamburger menu > What\'s New',
+  ]},
   { version: '1.5.3', date: '2026-04-03', changes: [
     'Discord Rich Presence — shows what you\'re listening to',
     'New hand-drawn app icon',
