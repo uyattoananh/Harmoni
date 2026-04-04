@@ -660,6 +660,7 @@ ipcMain.on('mark-changelog-seen', (_, version) => { store.set('lastSeenVersion',
 
 // Discord Rich Presence
 ipcMain.handle('discord-is-enabled', () => discordService ? discordService.isEnabled() : false);
+ipcMain.handle('discord-is-connected', () => discordService ? discordService.connected : false);
 
 ipcMain.on('discord-enable', async () => {
   if (discordService) await discordService.enable();

@@ -303,15 +303,18 @@
       }
       // Handle album art background on theme switch
       if (theme === 'album' || theme === 'fade') {
-        // Re-apply current art as background
+        // Re-apply current art as background to bar and lyrics panel
         if (lastArtFullUrl) {
-          document.querySelector('.bar').style.backgroundImage = `url('${lastArtFullUrl}')`;
+          const bgCss = `url('${lastArtFullUrl}')`;
+          document.querySelector('.bar').style.backgroundImage = bgCss;
           document.querySelector('.bar').style.backgroundSize = 'cover';
           document.querySelector('.bar').style.backgroundPosition = 'center';
+          document.querySelector('.lyrics-panel').style.backgroundImage = bgCss;
         }
         barArt.style.display = theme === 'album' ? 'none' : '';
       } else {
         document.querySelector('.bar').style.backgroundImage = '';
+        document.querySelector('.lyrics-panel').style.backgroundImage = '';
         barArt.style.display = '';
       }
     });
@@ -556,12 +559,14 @@
         let fullUrl = artUrl.startsWith('/') ? `http://${data._deviceIp || ''}:1400${artUrl}` : artUrl;
         lastArtFullUrl = fullUrl;
 
-        // Album/Fade theme — set bar background to album art
+        // Album/Fade theme — set bar and lyrics panel background to album art
         const theme = document.documentElement.dataset.theme;
         if (theme === 'album' || theme === 'fade') {
-          document.querySelector('.bar').style.backgroundImage = `url('${fullUrl}')`;
+          const bgCss = `url('${fullUrl}')`;
+          document.querySelector('.bar').style.backgroundImage = bgCss;
           document.querySelector('.bar').style.backgroundSize = 'cover';
           document.querySelector('.bar').style.backgroundPosition = 'center';
+          document.querySelector('.lyrics-panel').style.backgroundImage = bgCss;
         }
         // Album only — hide album art element (Fade keeps it)
         if (theme === 'album') {

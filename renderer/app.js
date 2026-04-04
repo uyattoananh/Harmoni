@@ -81,17 +81,28 @@ document.getElementById('settings-tab-settings').addEventListener('click', async
   document.getElementById('startup-toggle-btn').textContent = 'Launch on Startup: ' + (isEnabled ? 'On' : 'Off');
 
   const discordEnabled = await sonos.discordIsEnabled();
-  document.getElementById('discord-toggle-btn').textContent = 'Discord Rich Presence: ' + (discordEnabled ? 'On' : 'Off');
+  const discordConnected = await sonos.discordIsConnected();
+  const discordBtn = document.getElementById('discord-toggle-btn');
+  if (discordEnabled) {
+    discordBtn.textContent = discordConnected ? 'Discord Rich Presence: Connected' : 'Discord Rich Presence: On (not connected)';
+  } else {
+    discordBtn.textContent = 'Discord Rich Presence: Off';
+  }
 })();
 
 document.getElementById('discord-toggle-btn').addEventListener('click', async () => {
   const isEnabled = await sonos.discordIsEnabled();
+  const discordBtn = document.getElementById('discord-toggle-btn');
   if (isEnabled) {
     sonos.discordDisable();
-    document.getElementById('discord-toggle-btn').textContent = 'Discord Rich Presence: Off';
+    discordBtn.textContent = 'Discord Rich Presence: Off';
   } else {
     sonos.discordEnable();
-    document.getElementById('discord-toggle-btn').textContent = 'Discord Rich Presence: On';
+    discordBtn.textContent = 'Discord Rich Presence: Connecting...';
+    setTimeout(async () => {
+      const connected = await sonos.discordIsConnected();
+      discordBtn.textContent = connected ? 'Discord Rich Presence: Connected' : 'Discord Rich Presence: On (not connected)';
+    }, 3000);
   }
 });
 

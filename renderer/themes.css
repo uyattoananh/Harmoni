@@ -1838,7 +1838,18 @@
 [data-theme="fade"] .bar-btn:hover { color: #fff; background: rgba(255,255,255,0.1); }
 [data-theme="fade"] .bar-btn.play { background: rgba(255,255,255,0.9); color: #000; }
 [data-theme="fade"] .bar-close { background: rgba(255,60,60,0.8); }
-[data-theme="fade"] .lyrics-panel { background: rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.08); }
+[data-theme="fade"] .lyrics-panel {
+  border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  background-size: cover; background-position: center;
+  position: relative; overflow: hidden;
+}
+[data-theme="fade"] .lyrics-panel::after {
+  content: ''; position: absolute; inset: -30px;
+  background: inherit; background-size: cover; background-position: center;
+  filter: blur(20px) brightness(0.6) saturate(1.3);
+  z-index: 0; pointer-events: none;
+}
+[data-theme="fade"] .lyrics-panel > * { position: relative; z-index: 1; }
 [data-theme="fade"] .lyrics-line { color: rgba(255,255,255,0.3); }
 [data-theme="fade"] .lyrics-line.active { color: #fff; }
 [data-theme="fade"] .lyrics-line.past { color: rgba(255,255,255,0.5); }
@@ -1858,7 +1869,11 @@
 [data-theme="album"] .bar-btn:hover { color: #fff; background: rgba(255,255,255,0.1); }
 [data-theme="album"] .bar-btn.play { background: rgba(255,255,255,0.9); color: #000; }
 [data-theme="album"] .bar-close { background: rgba(255,60,60,0.8); }
-[data-theme="album"] .lyrics-panel { background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(20px); }
+[data-theme="album"] .lyrics-panel {
+  background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  background-size: cover; background-position: center;
+}
 [data-theme="album"] .lyrics-line { color: rgba(255,255,255,0.3); }
 [data-theme="album"] .lyrics-line.active { color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
 [data-theme="album"] .lyrics-line.past { color: rgba(255,255,255,0.5); }

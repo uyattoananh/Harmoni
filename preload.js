@@ -53,6 +53,7 @@ contextBridge.exposeInMainWorld('sonos', {
   getHistory: () => ipcRenderer.invoke('get-history'),
   // Discord
   discordIsEnabled: () => ipcRenderer.invoke('discord-is-enabled'),
+  discordIsConnected: () => ipcRenderer.invoke('discord-is-connected'),
   discordEnable: () => ipcRenderer.send('discord-enable'),
   discordDisable: () => ipcRenderer.send('discord-disable'),
   // Spotify
